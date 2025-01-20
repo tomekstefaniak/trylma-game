@@ -1,0 +1,229 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 OPR/115.0.0.0" version="26.0.5">
+  <diagram name="Strona-1" id="QZqPi5SUtdxAelG8N3jB">
+    <mxGraphModel dx="1185" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aafCU_Z4_82wKhKeygWU-76" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="620" width="800" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-68" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="800" height="590" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-1" value="ServerApp" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="40" width="200" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-2" value="- port: int&lt;div&gt;- maxCapacity: int&lt;/div&gt;&lt;div&gt;- gameVariant: char&lt;/div&gt;&lt;div&gt;+ players: ArrayList&amp;lt;ClientThread&amp;gt;&lt;/div&gt;&lt;div&gt;+ game: GameEngine&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-1">
+          <mxGeometry y="26" width="200" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-1">
+          <mxGeometry y="110" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-4" value="+ ServerApp(port, maxCapacity, gameVariant)&lt;div&gt;- run(): void&lt;/div&gt;&lt;div&gt;+ updatePlayers(): void&lt;/div&gt;&lt;div&gt;+ printForAll(message): void&lt;/div&gt;&lt;div&gt;+ startGame(): void&lt;/div&gt;&lt;div&gt;+ main(args): static void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-1">
+          <mxGeometry y="118" width="200" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-5" value="GameThread" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="360" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-6" value="- server: ServerApp" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-5">
+          <mxGeometry y="26" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-5">
+          <mxGeometry y="52" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-8" value="+ GameThread(server)&lt;div&gt;+ run(): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-5">
+          <mxGeometry y="60" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-10" value="ClientThread" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-11" value="- socket: Socket&lt;div&gt;- server: ServerApp&lt;/div&gt;&lt;div&gt;- boolean: deny&lt;/div&gt;&lt;div&gt;+ boolean: ended&lt;/div&gt;&lt;div&gt;- id: int&lt;/div&gt;&lt;div&gt;- in: BufferedReader&lt;/div&gt;&lt;div&gt;- out: PrintWriter&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-10">
+          <mxGeometry y="26" width="200" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-10">
+          <mxGeometry y="140" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-13" value="+ ClientThread(socket, server, deny)&lt;div&gt;+ run(): void&lt;/div&gt;&lt;div&gt;+ print(message): void&lt;/div&gt;&lt;div&gt;+ getID(): int&lt;/div&gt;&lt;div&gt;+ setID(newID): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-10">
+          <mxGeometry y="148" width="200" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-14" value="Interpreter" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-14">
+          <mxGeometry y="26" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-17" value="+ respond(message, server, player): static String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-14">
+          <mxGeometry y="34" width="200" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-28" value="&amp;lt;&amp;lt;interface&amp;gt;&amp;gt; Game" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="640" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-30" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-28">
+          <mxGeometry y="26" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-31" value="+ draw(): String&lt;div&gt;+ move(player, xS, yS, xF, yF): void&lt;/div&gt;&lt;div&gt;+ gameWon(): int&lt;/div&gt;&lt;div&gt;+ gameEnded(): boolean&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-28">
+          <mxGeometry y="34" width="200" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-32" value="ClassicGame" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="640" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-33" value="- board: Board" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-32">
+          <mxGeometry y="26" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-34" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-32">
+          <mxGeometry y="52" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-35" value="+ ClassicGame(players)&lt;div&gt;+ draw(): String&lt;/div&gt;&lt;div&gt;+ move(player, xS, yS, xF, yF): void&lt;/div&gt;&lt;div&gt;+ gameWon(): int&lt;/div&gt;&lt;div&gt;+ gameEnded(): boolean&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-32">
+          <mxGeometry y="60" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-36" value="&amp;lt;&amp;lt;inteface&amp;gt;&amp;gt; Board" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="840" width="200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-38" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-36">
+          <mxGeometry y="26" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-39" value="+ createBoard(height, width): Field[][]&lt;div&gt;+ fillBoard(players): void&lt;/div&gt;&lt;div&gt;+ fillCorner(corner, player): void&lt;/div&gt;&lt;div&gt;+ draw(): String&lt;/div&gt;&lt;div&gt;+ move(player, xS, yS, xF, yF): void&lt;/div&gt;&lt;div&gt;+ getField(x, y): Field&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-36">
+          <mxGeometry y="34" width="200" height="116" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-40" value="ClassicBoard" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="840" width="200" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-41" value="- width: int&lt;div&gt;- height: int&lt;/div&gt;&lt;div&gt;- board: Field[][]&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-40">
+          <mxGeometry y="26" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-42" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-40">
+          <mxGeometry y="80" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-43" value="+ ClassicBoard()&lt;div&gt;+ fillBoard(players): void&lt;/div&gt;&lt;div&gt;+ fillCorner(corner, player): void&lt;/div&gt;&lt;div&gt;+ draw(): String&lt;/div&gt;&lt;div&gt;+ move(player, xS, yS, xF, yF): void&lt;/div&gt;&lt;div&gt;+ getField(x, y): Field&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-40">
+          <mxGeometry y="88" width="200" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-44" value="Field" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="640" width="200" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-45" value="- x: int&lt;div&gt;- y: int&lt;/div&gt;&lt;div&gt;- type: int&lt;/div&gt;&lt;div&gt;- piece: Piece&lt;/div&gt;&lt;div&gt;- neighbors: Field[]&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-44">
+          <mxGeometry y="26" width="200" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-46" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-44">
+          <mxGeometry y="110" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-47" value="+ Field(x, y, type)&lt;div&gt;+ setPiece(piece): void&lt;/div&gt;&lt;div&gt;+ removePiece(): void&lt;/div&gt;&lt;div&gt;+ addNeighbors(board): void&lt;/div&gt;&lt;div&gt;+ isNeighbor(): boolean&lt;/div&gt;&lt;div&gt;+ getX(): int&lt;/div&gt;&lt;div&gt;+ getY(): int&lt;/div&gt;&lt;div&gt;+ getType(): int&lt;/div&gt;&lt;div&gt;+ getPiece(): Piece&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-44">
+          <mxGeometry y="118" width="200" height="142" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-48" value="Piece" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="960" width="200" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-49" value="- x: int&lt;div&gt;- y: int&lt;/div&gt;&lt;div&gt;- player: int&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-48">
+          <mxGeometry y="26" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-50" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-48">
+          <mxGeometry y="80" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-51" value="+ Piece(x, y, player)&lt;div&gt;+ changePosition(x, y): void&lt;/div&gt;&lt;div&gt;+ getPlayer(): int&lt;/div&gt;&lt;div&gt;+getX(): int&lt;/div&gt;&lt;div&gt;+ getY(): int&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-48">
+          <mxGeometry y="88" width="200" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-23" value="GameEngine" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="320" width="200" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-24" value="- game: Game&lt;div&gt;- players: int&lt;/div&gt;&lt;div&gt;- activePlayer: int&lt;/div&gt;&lt;div&gt;- playersOut: ArrayList&amp;lt;Integer&amp;gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry y="26" width="200" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-25" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry y="100" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-26" value="+ state(): boolean&lt;div&gt;+ start(variant, players): void&lt;/div&gt;&lt;div&gt;+ move(player, args): void&lt;/div&gt;&lt;div&gt;+ draw(): String&lt;/div&gt;&lt;div&gt;+ getActivePlayer(): int&lt;/div&gt;&lt;div&gt;+ nextPlayer(): void&lt;/div&gt;&lt;div&gt;+ addPlayersOut(player): void&lt;/div&gt;&lt;div&gt;+ ended(): boolean&lt;/div&gt;&lt;div&gt;+ getResult(): int&lt;/div&gt;&lt;div&gt;+ end(): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry y="108" width="200" height="162" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-54" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-1" target="aafCU_Z4_82wKhKeygWU-5">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="300" y="404.17" as="sourcePoint" />
+            <mxPoint x="460" y="404.17" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-55" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=0.997;exitY=1.014;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-4" target="aafCU_Z4_82wKhKeygWU-5">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="520" y="300" as="sourcePoint" />
+            <mxPoint x="493" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-56" value="" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-1" target="aafCU_Z4_82wKhKeygWU-10">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="680" y="160" as="sourcePoint" />
+            <mxPoint x="840" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-57" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-10" target="aafCU_Z4_82wKhKeygWU-14">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="500" y="580" as="sourcePoint" />
+            <mxPoint x="660" y="580" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-58" value="" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-1" target="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="500" y="250" as="sourcePoint" />
+            <mxPoint x="660" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-64" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-14" target="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="630" y="510" as="sourcePoint" />
+            <mxPoint x="790" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-65" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-5" target="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="500" y="250" as="sourcePoint" />
+            <mxPoint x="660" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-66" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-10" target="aafCU_Z4_82wKhKeygWU-23">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="500" y="250" as="sourcePoint" />
+            <mxPoint x="660" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-69" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b&gt;server&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;perimeterSpacing=1;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="660" y="20" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-70" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-23" target="aafCU_Z4_82wKhKeygWU-28">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="270" y="610" as="sourcePoint" />
+            <mxPoint x="430" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-71" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-28" target="aafCU_Z4_82wKhKeygWU-32">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="370" y="780" as="sourcePoint" />
+            <mxPoint x="530" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-72" value="" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-32" target="aafCU_Z4_82wKhKeygWU-36">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="450" y="680" as="sourcePoint" />
+            <mxPoint x="610" y="680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-73" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-36" target="aafCU_Z4_82wKhKeygWU-40">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="230" y="870" as="sourcePoint" />
+            <mxPoint x="390" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-74" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-44" target="aafCU_Z4_82wKhKeygWU-48">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="370" y="870" as="sourcePoint" />
+            <mxPoint x="530" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-75" value="" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;" edge="1" parent="1" source="aafCU_Z4_82wKhKeygWU-40" target="aafCU_Z4_82wKhKeygWU-44">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="370" y="870" as="sourcePoint" />
+            <mxPoint x="530" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aafCU_Z4_82wKhKeygWU-77" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b&gt;game&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;strokeColor=default;perimeterSpacing=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="1080" width="160" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
