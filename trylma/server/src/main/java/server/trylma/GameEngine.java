@@ -1,7 +1,7 @@
 package server.trylma;
 
 import java.util.*;
-import server.chinesecheckers.game.*;
+import server.trylma.game.*;
 
 /**
  * Klasa odpowiadajaca za przeprowadzanie rozgrywki
