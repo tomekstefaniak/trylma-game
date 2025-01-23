@@ -30,6 +30,8 @@ public class OOOCBoard implements Board {
 				board[i][j].addNeighbors(this);
 			}
 		}
+		
+		new Paths(this, width, height);
 
 		winnerList = new ArrayList<Integer>();
 	}

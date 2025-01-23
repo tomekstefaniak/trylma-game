@@ -31,6 +31,8 @@ public class ClassicBoard implements Board {
 			}
 		}
 
+		new Paths(this, width, height);
+
 		winnerList = new ArrayList<Integer>();
 	}
 
