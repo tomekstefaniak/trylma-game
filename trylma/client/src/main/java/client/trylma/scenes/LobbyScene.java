@@ -29,6 +29,10 @@ public class LobbyScene extends Scene {
         // Inicjalizacja kontenera na graczy
         playersContainer = createPlayersContainer();
 
+        // Utworzenie przycisków od zarządzania botami
+        Button addBotButton = createAddBotButton(clientApp);
+        Button removeBotButton = createRemoveBotButton(clientApp);
+
         // Tworzenie przycisku powrotu
         Button backButton = createBackButton(clientApp);
 
@@ -36,7 +40,7 @@ public class LobbyScene extends Scene {
         VBox layout = (VBox) this.getRoot();
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: rgb(30, 30, 50);");
-        layout.getChildren().addAll(playersContainer, backButton);
+        layout.getChildren().addAll(playersContainer, addBotButton, removeBotButton, backButton);
     }
 
     /**
@@ -49,6 +53,44 @@ public class LobbyScene extends Scene {
         container.setAlignment(Pos.CENTER);
         container.setStyle("-fx-background-color: rgb(30, 30, 50);");
         return container;
+    }
+
+    /**
+     * Tworzy i konfiguruje przycisk powrotu do ekranu JoinScene.
+     *
+     * @param clientApp instancja głównej aplikacji klienta
+     * @return skonfigurowany przycisk
+     */
+    private Button createAddBotButton(ClientApp clientApp) {
+        Button backButton = new Button("Add Bot");
+        backButton.setStyle(
+            "-fx-background-color: rgb(90, 90, 255); " +
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10 20 10 20;"
+        );
+        backButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot add"));
+        return backButton;
+    }
+
+    /**
+     * Wysyła prosbę o usunięcie bota do serwera
+     *
+     * @param clientApp instancja głównej aplikacji klienta
+     * @return skonfigurowany przycisk
+     */
+    private Button createRemoveBotButton(ClientApp clientApp) {
+        Button backButton = new Button("Remove Bot");
+        backButton.setStyle(
+            "-fx-background-color: rgb(90, 90, 255); " +
+            "-fx-text-fill: white; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-padding: 10 20 10 20;"
+        );
+        backButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot remove"));
+        return backButton;
     }
 
     /**
