@@ -68,7 +68,8 @@ public class LobbyScene extends Scene {
             "-fx-text-fill: white; " +
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
-            "-fx-padding: 10 20 10 20;"
+            "-fx-padding: 10 20 10 20;" +
+            "-fx-pref-width: 100;"
         );
         backButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot add"));
         return backButton;
@@ -87,7 +88,8 @@ public class LobbyScene extends Scene {
             "-fx-text-fill: white; " +
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
-            "-fx-padding: 10 20 10 20;"
+            "-fx-padding: 10 20 10 20;" +
+            "-fx-pref-width: 100;"
         );
         backButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot remove"));
         return backButton;
@@ -106,7 +108,8 @@ public class LobbyScene extends Scene {
             "-fx-text-fill: white; " +
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
-            "-fx-padding: 10 20 10 20;"
+            "-fx-padding: 10 20 10 20;" +
+            "-fx-pref-width: 100;"
         );
         backButton.setOnAction(event -> clientApp.showJoinScene());
         return backButton;
