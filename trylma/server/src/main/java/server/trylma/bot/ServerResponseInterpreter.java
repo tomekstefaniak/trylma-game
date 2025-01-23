@@ -1,4 +1,4 @@
-package client.trylma.io;
+package server.trylma.bot;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,17 +12,17 @@ import java.io.IOException;
 public class ServerResponseInterpreter {
 
     private final ServerIOHandler serverIOHandler;
-    private final IOManager ioManager;
+    private final BotBrain botBrain;
 
     /**
      * Konstruktor klasy
      *
      * @param serverIOHandler obiekt obsługujący komunikację z serwerem
-     * @param ioManager menedżer odpowiedzialny za interakcję z użytkownikiem
+     * @param BotBrain menedżer odpowiedzialny za interakcję z użytkownikiem
      */
-    public ServerResponseInterpreter(ServerIOHandler serverIOHandler, IOManager ioManager) {
+    public ServerResponseInterpreter(ServerIOHandler serverIOHandler, BotBrain botBrain) {
         this.serverIOHandler = serverIOHandler;
-        this.ioManager = ioManager;
+        this.botBrain = botBrain;
     }
 
     /**
@@ -41,18 +41,12 @@ public class ServerResponseInterpreter {
         switch (responseParsed.get(0)) {
             case "disconnect":
                 System.out.println("Server told us to disconnect");
-                ioManager.leaveServer();
                 serverIOHandler.running = false; // Kończymy wątek
-                break;
-
-            case "lobby":
-                // Aktualizacja listy graczy w lobby
-                ioManager.updateLobbyPlayersList(responseParsed.subList(1, responseParsed.size()));
                 break;
 
             case "started":
                 // Gra rozpoczęła się: wczytanie danych początkowych gry
-                ioManager.startGame(
+                botBrain.startGame(
                         serverIOHandler.in.readLine(), // wariant gry
                         serverIOHandler.in.readLine(), // kto zaczyna
                         serverIOHandler.in.readLine(), // plansza
@@ -61,24 +55,15 @@ public class ServerResponseInterpreter {
                 );
                 break;
 
-            case "next":
-                // Aktualizacja planszy i tury
-                ioManager.updateGame(
-                        serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
-                        serverIOHandler.in.readLine()  // stan planszy
-                );
-                break;
-
             case "ended":
                 // Gra zakończona
-                ioManager.leaveServer();
-                serverIOHandler.running = false;
+                serverIOHandler.stopConnection();
                 break;
 
             case "[ALL]":
                 if (responseParsed.size() > 1 &&
                         (responseParsed.get(1).equals("moved") || responseParsed.get(1).equals("skipped"))) {
-                    ioManager.updateGame(
+                    botBrain.nextMove(
                             serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
                             serverIOHandler.in.readLine()  // stan planszy
                     );
@@ -88,7 +73,7 @@ public class ServerResponseInterpreter {
             default:
                 // Obsługa błędów związanych z ruchem gracza
                 if (serverResponse.matches("GameEngine.move: invalid field|invalid starting field|invalid end field|no piece on starting field|wrong piece on starting field|other piece on end field|illegal move|invalid field")) {
-                    ioManager.repeatMove();
+                    botBrain.move();
                 }
                 break;
         }

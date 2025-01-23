@@ -1,13 +1,13 @@
 server/trylma/game/ClassicBoard.class
 server/trylma/game/OOOCBoard.class
 server/trylma/game/Board.class
+server/trylma/ClientThread.class
 server/trylma/ServerApp.class
 server/trylma/game/OOOCGame.class
+server/trylma/Interpreter.class
 server/trylma/game/Game.class
 server/trylma/GameThread.class
-server/trylma/game/Field.class
-server/trylma/ClientThread.class
-server/trylma/Interpreter.class
 server/trylma/GameEngine.class
+server/trylma/game/Field.class
 server/trylma/game/ClassicGame.class
 server/trylma/game/Piece.class

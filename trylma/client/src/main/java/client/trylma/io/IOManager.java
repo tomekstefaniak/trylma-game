@@ -53,7 +53,7 @@ public class IOManager {
         // Wysłanie pseudonimu gracza do serwera
         try {
             serverIOHandler.sendMessageToServer(nickname);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             System.err.println("Error while sending nickname: " + e.getMessage());
             leaveServer();
         }
@@ -81,7 +81,13 @@ public class IOManager {
      * @param idString identyfikator gracza
      * @param playersString lista graczy
      */
-    public void startGame(String variantString, String turnString, String boardString, String idString, String playersString) {
+    public void startGame(
+        String variantString, 
+        String turnString, 
+        String boardString, 
+        String idString, 
+        String playersString
+    ) {
         try {
             String variant = extractValue(variantString);
             int turn = Integer.parseInt(extractValue(turnString));
