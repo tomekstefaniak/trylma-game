@@ -164,4 +164,8 @@ public interface Board {
 	 * @return lista graczy, ktora ukonczyla gre, w kolejnosci ukonczenia
 	 */
 	public ArrayList<Integer> getWinnerList();
+
+	public ArrayList<Field> possibleMove(Field from);
+
+	public ArrayList<Piece> getPieces(int player);
 }

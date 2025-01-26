@@ -1,6 +1,8 @@
 package server.trylma;
 
 import java.util.*;
+
+import server.trylma.bot.Bot;
 import server.trylma.game.*;
 
 /**
@@ -139,7 +141,12 @@ public class GameEngine {
 	/** 
 	 * Konczy rozgrywke
 	 */
-	public void end() {
+	public void end(ServerApp server) {
 		game = null;
+		server.bots = new ArrayList<Bot>();
+	}
+
+	public Board getBoard() {
+		return game.getBoard();
 	}
 }

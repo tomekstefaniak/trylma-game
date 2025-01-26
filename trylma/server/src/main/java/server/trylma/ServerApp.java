@@ -5,6 +5,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import server.trylma.bot.Bot;
+
 /**
  * Klasa serwera, na ktorym odbywa sie rozgrywka
  */
@@ -20,6 +22,8 @@ public class ServerApp {
 
 	/** Lista graczy na serwerze */
 	public ArrayList<ClientThread> players;
+
+	public ArrayList<Bot> bots;
 
 	/** Instancja GameEngine zarzadzajaca gra na serwerze */
 	public GameEngine game;
@@ -62,6 +66,7 @@ public class ServerApp {
 			System.out.println("[SERVER] server listening on port " + port);
 
 			this.players = new ArrayList<ClientThread>();
+			this.bots = new ArrayList<Bot>();
 			this.game = new GameEngine();
 
 			while (true) {
@@ -69,7 +74,7 @@ public class ServerApp {
 				updatePlayers();
 				
 				// nie pozwol na wejscie jezeli jest maksymalna liczba graczy na serwerze lub trwa gra
-				if (players.size() < maxCapacity && !game.state()) {
+				if (players.size() + bots.size() < maxCapacity && !game.state()) {
 					ClientThread client = new ClientThread(socket, this, false);
 					client.start();
 					players.add(client);
@@ -83,7 +88,7 @@ public class ServerApp {
 					updateLobbyPlayers();
 
 					// rozpoczecie gry jezeli na serwer weszla ostatnia potrzebna osoba
-					if (players.size() == maxCapacity && !game.state())
+					if (players.size() + bots.size() == maxCapacity && !game.state())
 						startGame();
 				} else {
 					new ClientThread(socket, this, true).start(); 
@@ -127,6 +132,26 @@ public class ServerApp {
 	public void printForAll(String message) {
 		for (ClientThread client : players)
 			client.print(message);
+		for (Bot bot : bots) {
+			bot.inform(message);
+		}
+	}
+
+	public void addBot() {
+		if (players.size() + bots.size() < maxCapacity && !game.state()) {
+			int botID = bots.size();
+			bots.add(new Bot(botID, this, game));
+		} else {
+			throw new IllegalArgumentException("cannot add bot");
+		}
+
+		if (players.size() + bots.size() == maxCapacity && !game.state())
+			startGame();
+	}
+
+	public void removeBot() {
+		try {bots.remove(0);}
+		catch(IndexOutOfBoundsException e) {throw new IllegalArgumentException("cannot remove bot.");}
 	}
 
 	/**
@@ -134,7 +159,7 @@ public class ServerApp {
 	 */
 	public void startGame() {
 		try {
-			game.start(gameVariant, players.size());
+			game.start(gameVariant, players.size() + bots.size());
 			System.out.println("[SERVER] started game");
 			
 			printForAll("started");
@@ -142,13 +167,18 @@ public class ServerApp {
 			printForAll("turn " + game.getActivePlayer());
 			printForAll("board " + game.draw());
 			
-			String playersString = "";
 			// Ustawienie id graczy i wysłanie wiadomości z nickami i ids
+			String playersString = "";
 			for(int i = 0; i < players.size(); i++) {
 				players.get(i).setID(i);
 				players.get(i).print("ID " + i);
 				playersString += String.valueOf(i) + ":" + players.get(i).nickname + " ";
 			}
+			for(int i = 0; i < bots.size(); i++) {
+				bots.get(i).setID(i + players.size());
+				playersString += String.valueOf(i + players.size()) + ":" + bots.get(i).nickname + " ";
+			}
+			
 			printForAll(playersString);
 
 			new GameThread(this).start();

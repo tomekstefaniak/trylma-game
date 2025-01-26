@@ -44,6 +44,18 @@ public class Interpreter {
 			case "result":
 				try {return server.game.getResult().toString();}
 				catch(Exception e) {return e.getMessage();}
+			case "bot":
+				if (args.equals("add")) {
+					try {
+						server.addBot();
+						return "[ALL] added new bot";
+					} catch(Exception e) {return e.getMessage();}
+				} else {
+					try {
+						server.removeBot();
+						return "[ALL] removed 1 bot";
+					} catch(Exception e) {return e.getMessage();}
+				}
 			case "exit":
 				return "bye";
 			default: return "unknown command";

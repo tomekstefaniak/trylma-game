@@ -128,6 +128,7 @@ public class ClassicBoard implements Board {
 	 * @param from pole startowe
 	 * @return lista pol, na ktore mozna przejsc z podanego pola
 	 */
+	@Override
 	public ArrayList<Field> possibleMove(Field from) {
 		ArrayList<Field> result = new ArrayList<Field>();
 		result.add(from);
@@ -190,5 +191,22 @@ public class ClassicBoard implements Board {
 	 */
 	public ArrayList<Integer> getWinnerList() {
 		return winnerList;
+	}
+
+	@Override
+	public ArrayList<Piece> getPieces(int player) {
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+
+		for(int i = 0; i < height; i++) {
+			for(int j = 0; j < width; j++) {
+				Field field = board[i][j];
+				Piece piece = field.getPiece();
+				if(piece != null && piece.getPlayer() == player) {
+					pieces.add(piece);
+				}
+			}
+		}
+
+		return pieces;
 	}
 }

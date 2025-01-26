@@ -43,5 +43,10 @@ public class OOOCGame implements Game {
 		if (players == 0) return true;
 		return board.getWinnerList().size() == players - 1 && board.getWinnerList().size() != 0;
 	}
+
+	@Override
+	public Board getBoard() {
+		return board;
+	}
 	
 }

@@ -1,33 +1,76 @@
 package server.trylma.bot;
 
-import java.net.Socket;
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import server.trylma.*;
 
 public class Bot {
-
-    private static String[] botNicknames = {
+	private static String[] botNicknames = {
         "Shinpiung", "Bożydar", "Uzghul", "Zutgrud", "Bocian", "Prycz"
     };
-    
-    public Bot(int port, int botNumber) throws IOException {
-        Socket socket = new Socket("localhost", port);
-        System.out.println("Connected to lobby (server) on port: " + port);
 
-        // Tworzenie instancji ServerIOHandler
-        ServerIOHandler serverIOHandler = new ServerIOHandler(socket);
+	public String nickname;
+	private int id;
+	private ServerApp server;
+	private GameEngine engine;
+	private BotBrain brain;
 
-        // Ustawienie wątku jako demona
-        serverIOHandler.setDaemon(true);
-        serverIOHandler.start();
+	public Bot(int botID, ServerApp server, GameEngine engine) {
+		this.nickname = botNicknames[botID];
+		this.server = server;
+		this.engine = engine;
+		this.id = -1;
+	}
 
-        // Wysłanie pseudonimu gracza do serwera
-        String nickname = botNicknames[botNumber];
+	public void inform(String msg) {
+		List<String> responseParsed = Arrays.stream(msg.split("\\s+"))
+                                            .filter(s -> !s.isEmpty())
+                                            .collect(Collectors.toList());
 
-        try {
-            serverIOHandler.sendMessageToServer(nickname);
-        } catch (Exception e) {
-            System.err.println("Error while sending nickname: " + e.getMessage());
-            serverIOHandler.running = false;
-        }
-    }
+		if (responseParsed.get(0).startsWith("0:")) {
+			this.brain = new BotBrain(server, engine, id);
+			if (engine.getActivePlayer() == id) {
+				brain.move();
+			}
+		}
+		
+		if (responseParsed.size() > 1) {
+			if (responseParsed.get(1).equals("moved")) {
+				if (Integer.parseInt(responseParsed.get(4)) == id) {
+					brain.move();
+				}
+			} else if(responseParsed.get(1).equals("skipped")) {
+				if (Integer.parseInt(responseParsed.get(3)) == id) {
+					brain.move();
+				}
+			}
+		}
+
+        // // Obsługa różnych typów wiadomości od serwera
+        // switch (responseParsed.get(0)) {
+        //     case "[ALL]":
+        //         if (responseParsed.size() > 1) {
+        //             if (responseParsed.get(1).equals("moved")) {
+		// 				if (Integer.parseInt(responseParsed.get(4)) == id) {
+		// 					new BotBrain(server, engine, id).move();
+		// 				}
+		// 			} else if(responseParsed.get(1).equals("skipped")) {
+		// 				if (Integer.parseInt(responseParsed.get(3)) == id) {
+		// 					new BotBrain(server, engine, id).move();
+		// 				}
+		// 			}
+		// 		}
+        //         break;
+        // }
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public void setID(int id) {
+		this.id = id;
+	}
 }

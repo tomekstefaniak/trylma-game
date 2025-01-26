@@ -43,4 +43,9 @@ public class ClassicGame implements Game {
 		return board.getWinnerList().size() == players - 1 && board.getWinnerList().size() != 0;
 	}
 	
+	@Override
+	public Board getBoard() {
+		return board;
+	}
+
 }

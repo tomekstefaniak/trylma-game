@@ -32,15 +32,15 @@ class GameThread extends Thread {
 					serverApp.printForAll("standings: " + serverApp.game.getResult().toString());
 				
 				// jezeli wszyscy poza jednym graczem wygrali to zakoncz gre
-				if(currentWinners.size() == serverApp.players.size() - 1) 
-					serverApp.game.end();
+				if(currentWinners.size() == serverApp.players.size() + serverApp.bots.size() - 1) 
+					serverApp.game.end(serverApp);
 
 				prevWinners = currentWinners;
 			} catch (Exception e) {}
 
 			// jezeli na serwerze zostgal jeden gracz to zakoncz gre
-			if (serverApp.players.size() == 1) 
-				serverApp.game.end();
+			if (serverApp.players.size() == 1 && serverApp.bots.size() == 0) 
+				serverApp.game.end(serverApp);
 
 			try {Thread.sleep(10);} catch (Exception e ) {}
 		}

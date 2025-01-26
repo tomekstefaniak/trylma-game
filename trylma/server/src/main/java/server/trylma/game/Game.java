@@ -35,4 +35,5 @@ public interface Game {
      */
     public boolean gameEnded(int players);
     
+    public Board getBoard();
 }

@@ -1,45 +1,73 @@
 package server.trylma.bot;
 
+import java.util.ArrayList;
+
+import server.trylma.*;
+import server.trylma.game.*;
+
 public class BotBrain {
+	private ServerApp server;
+	private GameEngine engine;
+	private int player;
 
-    private ServerIOHandler serverIOHandler;
+	public BotBrain(ServerApp server, GameEngine engine, int player) {
+		this.server = server;
+		this.engine = engine;
+		this.player = player;
+	}
 
-    private int board[][];
-    private String thisPlayerID;
-    
-    public BotBrain(ServerIOHandler serverIOHandler) {
-        this.serverIOHandler = serverIOHandler;
-    }
+	public void move() {
+		tryMove(new ArrayList<Field>());
+	}
 
-    public void startGame(
-        String variantString, 
-        String turnString, 
-        String boardString, 
-        String idString, 
-        String playersString
-    ) {
-        parseBoard(boardString);
-        thisPlayerID = idString;
-    }
+	public void tryMove(ArrayList<Field> excluded) {
+		Board board = engine.getBoard();
+		ArrayList<Piece> pieces = board.getPieces(player);
 
-    private void parseBoard(String boardString) {
-        /**
-         * LOGIKA PARSOWANIA STRINGA BOARDA DO TABLICY I AKTUALIZACJI FIELDA
-         */
-    }
+		int maxGain = -1;
+		Field startField = null;
+		Field finishField = null;
+		for(Piece piece : pieces) {
+			int x = piece.getX(), y = piece.getY();
+			Field currentField = board.getField(x, y);
 
-    public void nextMove(String turnString, String boardString) {
-        parseBoard(boardString);
-        move();
-    }
+			int destination = piece.getDestination();
+			int currentDistance = currentField.getDistance(destination - 1);
 
-    public void move() {
-        String moveString = "";
+			ArrayList<Field> possibleMoves = board.possibleMove(currentField);
+			for(Field field : possibleMoves) {
+				if(!excluded.contains(field)) {
+					int distance = field.getDistance(destination - 1);
+					int delta = currentDistance - distance;
+	
+					if(delta > maxGain) {
+						maxGain = delta;
+						startField = currentField;
+						finishField = field;
+					}
+				}
+			}
+		}
 
-        /**
-         * LOGIKA WYKONYWANIA RUCHU
-         */
+		if(finishField == null) {
+			try {
+				engine.nextPlayer(player);
+				server.printForAll("[ALL] skipped" + "\nturn: " + server.game.getActivePlayer() + "\nboard: " + server.game.draw());
+			} catch(Exception e) {}
+		} else {
+			int xS = startField.getX(), yS = startField.getY();
+			int xF = finishField.getX(), yF = finishField.getY();
 
-        serverIOHandler.sendMessageToServer(moveString);
-    }
+			System.out.println("Bot " + player + " > move " + xS + "," + yS + "-" + xF + "," + yF);
+
+			try {
+				String args = xS + "," + yS + "-" + xF + "," + yF;
+				engine.move(player, args);
+				server.printForAll("[ALL] moved " + args + "\nturn: " + server.game.getActivePlayer() + "\nboard: " + server.game.draw());
+			} catch (Exception e) {
+				excluded.add(finishField);
+				tryMove(excluded);
+			}
+		}
+	}
 }
