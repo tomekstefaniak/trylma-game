@@ -1,0 +1,6 @@
+# Wykluczenie konfiguracji od niektórych rozszerzeń z vscode
+.vscode
+
+# Wykluczenie wytworu 'mvn compile' albo 'mvn package'
+chinesecheckers/client/target
+chinesecheckers/server/target
