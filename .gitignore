@@ -2,5 +2,5 @@
 .vscode
 
 # Wykluczenie wytworu 'mvn compile' albo 'mvn package'
-chinesecheckers/client/target
-chinesecheckers/server/target
+trylma/client/target/
+trylma/server/target/
