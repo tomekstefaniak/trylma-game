@@ -42,6 +42,9 @@ class GameThread extends Thread {
 			if (serverApp.players.size() == 1 && serverApp.bots.size() == 0) 
 				serverApp.game.end(serverApp);
 
+			if (serverApp.players.size() == 0) 
+				serverApp.game.end(serverApp);
+
 			try {Thread.sleep(10);} catch (Exception e ) {}
 		}
 

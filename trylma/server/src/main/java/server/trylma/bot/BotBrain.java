@@ -1,6 +1,7 @@
 package server.trylma.bot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import server.trylma.*;
 import server.trylma.game.*;
@@ -20,14 +21,23 @@ public class BotBrain {
 		tryMove(new ArrayList<Field>());
 	}
 
-	public void tryMove(ArrayList<Field> excluded) {
+	public void tryMove(ArrayList<Field> excludedFields) {
 		Board board = engine.getBoard();
-		ArrayList<Piece> pieces = board.getPieces(player);
 
-		int maxGain = -1;
+		if(board.getWinnerList().contains(player)) {
+			try {
+				engine.nextPlayer(player);
+				server.printForAll("[ALL] skipped" + "\nturn: " + server.game.getActivePlayer() + "\nboard: " + server.game.draw());
+			} catch(Exception e) {}
+		}
+
+		ArrayList<Piece> pieces = board.getPieces(player);
+		Collections.shuffle(pieces);
+
+		int maxGain = Integer.MIN_VALUE;
 		Field startField = null;
 		Field finishField = null;
-		for(Piece piece : pieces) {
+		for(Piece piece : pieces) {	
 			int x = piece.getX(), y = piece.getY();
 			Field currentField = board.getField(x, y);
 
@@ -36,7 +46,7 @@ public class BotBrain {
 
 			ArrayList<Field> possibleMoves = board.possibleMove(currentField);
 			for(Field field : possibleMoves) {
-				if(!excluded.contains(field)) {
+				if(!excludedFields.contains(field)) {
 					int distance = field.getDistance(destination - 1);
 					int delta = currentDistance - distance;
 	
@@ -58,15 +68,14 @@ public class BotBrain {
 			int xS = startField.getX(), yS = startField.getY();
 			int xF = finishField.getX(), yF = finishField.getY();
 
-			System.out.println("Bot " + player + " > move " + xS + "," + yS + "-" + xF + "," + yF);
-
 			try {
 				String args = xS + "," + yS + "-" + xF + "," + yF;
 				engine.move(player, args);
+				System.out.println("Bot " + player + " > move " + xS + "," + yS + "-" + xF + "," + yF);
 				server.printForAll("[ALL] moved " + args + "\nturn: " + server.game.getActivePlayer() + "\nboard: " + server.game.draw());
 			} catch (Exception e) {
-				excluded.add(finishField);
-				tryMove(excluded);
+				excludedFields.add(finishField);
+				tryMove(excludedFields);
 			}
 		}
 	}
