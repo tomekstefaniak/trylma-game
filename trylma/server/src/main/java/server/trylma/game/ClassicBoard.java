@@ -31,6 +31,8 @@ public class ClassicBoard implements Board {
 			}
 		}
 
+		new Paths(this, width, height);
+
 		winnerList = new ArrayList<Integer>();
 	}
 
@@ -107,7 +109,7 @@ public class ClassicBoard implements Board {
 		if (piece.getPlayer() != player) {throw new IllegalArgumentException("wrong piece on starting field");} // pionek innego gracza na polu startowym
 		if (destination.getPiece() != null) {throw new IllegalArgumentException("other piece on end field");} // inny pionek na polu docelowym
 		
-		if (possibleMove(field, destination)) {
+		if (possibleMove(field).contains(destination)) {
 			try {field.removePiece();} catch(IllegalArgumentException e) {throw e;} // brak pionka na polu startowym
 			try {destination.setPiece(piece);} catch(IllegalArgumentException e) {throw e;} // inny pionek na polu docelowym
 			updateWinners();
@@ -124,32 +126,24 @@ public class ClassicBoard implements Board {
 	/**
 	 * Sprawdza czy przejscie z jednego pola na drugie jest mozliwe
 	 * @param from pole startowe
-	 * @param to pole koncowe
-	 * @return czy mozna przejsc z from do to
+	 * @return lista pol, na ktore mozna przejsc z podanego pola
 	 */
-	public boolean possibleMove(Field from, Field to) {
-		if (from.isNeighbor(to)) {
-			return true;
-		}
-
-		ArrayList<Field> possibleJumps = new ArrayList<Field>();
-		possibleJumps.add(from);
+	public ArrayList<Field> possibleMove(Field from) {
+		ArrayList<Field> result = new ArrayList<Field>();
+		result.add(from);
 
 		boolean added = true;
 		while (added) {
 			added = false;
-			int n = possibleJumps.size();
+			int n = result.size();
 			for (int i = 0; i < n; i++) {
-				Field field = possibleJumps.get(i);
+				Field field = result.get(i);
 				for (int j = 0; j < 6; j++) {
 					Field neighbor = field.getNeighbor(j);
 					if (neighbor != null && neighbor.getType() != -1 && neighbor.getPiece() != null) {
 						Field potJump = neighbor.getNeighbor(j);
-						if (potJump != null && potJump.getType() != -1 && potJump.getPiece() == null && !possibleJumps.contains(potJump)) {
-							if (potJump == to) {
-								return true;
-							}
-							possibleJumps.add(potJump);
+						if (potJump != null && potJump.getType() != -1 && potJump.getPiece() == null && !result.contains(potJump)) {
+							result.add(potJump);
 							added = true;
 						}
 					}
@@ -157,7 +151,16 @@ public class ClassicBoard implements Board {
 			}
 		}
 
-		return false;
+		result.remove(from);
+
+		for (int i = 0; i < 6; i++) {
+			Field neighbor = from.getNeighbor(i);
+			if (neighbor != null) {
+				result.add(neighbor);
+			}
+		}
+
+		return result;
 	}
 
 	/**

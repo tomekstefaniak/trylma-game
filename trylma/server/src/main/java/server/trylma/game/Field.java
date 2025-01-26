@@ -25,6 +25,8 @@ public class Field {
 	 */
 	private Field[] neighbors;
 
+	private int[] distance;
+
 	/**
 	 * Konstruktor klasy
 	 * @param x wspolrzedna x pola
@@ -36,6 +38,11 @@ public class Field {
 		this.y = y;
 		this.type = type;
 		this.piece = null; // na poczatku brak pionka na polu
+		
+		this.distance = new int[6];
+		for (int i = 0; i < 6; i++) {
+			this.distance[i] = Integer.MAX_VALUE;
+		}
 	}
 
 	/**
@@ -95,12 +102,20 @@ public class Field {
 		return false;
 	}
 
+	public void setDistance(int corner, int distance) {
+		this.distance[corner] = distance;
+	}
+
 	/**
 	 * @param index indeks sasiada zgodny z zasadami przechowywania
 	 * @return pole sasiada o danym indeksie
 	 */
 	public Field getNeighbor(int index) {
 		return neighbors[index];
+	}
+
+	public int getDistance(int corner) {
+		return distance[corner];
 	}
 
 	/**
