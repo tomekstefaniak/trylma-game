@@ -51,7 +51,7 @@ public class ClientApp extends Application {
     public GameScene gameScene;
 
      /** Scena powtórki */
-     public GameScene replayScene;
+     public ReplayScene replayScene;
 
     /**
      * Główna metoda startowa JavaFX, wywoływana po uruchomieniu aplikacji.
