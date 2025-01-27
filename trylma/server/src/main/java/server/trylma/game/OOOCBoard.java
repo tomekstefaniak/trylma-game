@@ -31,6 +31,8 @@ public class OOOCBoard implements Board {
 			}
 		}
 		
+		// ma byc 2 razy
+		new Paths(this, width, height);
 		new Paths(this, width, height);
 
 		winnerList = new ArrayList<Integer>();

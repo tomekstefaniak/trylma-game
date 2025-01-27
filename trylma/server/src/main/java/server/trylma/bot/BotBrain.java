@@ -45,6 +45,7 @@ public class BotBrain {
 			int currentDistance = currentField.getDistance(destination - 1);
 
 			ArrayList<Field> possibleMoves = board.possibleMove(currentField);
+			Collections.shuffle(possibleMoves);
 			for(Field field : possibleMoves) {
 				if(!excludedFields.contains(field)) {
 					int distance = field.getDistance(destination - 1);
