@@ -13,7 +13,7 @@ public class FieldTest {
         GameManager mockGameManager = mock(GameManager.class);
 
         // Tworzenie instancji pola z początkowym właścicielem (ID = 0)
-        Field field = new Field(mockGameManager, 0, 5, 5);
+        GameField field = new GameField(mockGameManager, 0, 5, 5);
 
         // Sprawdzenie początkowego koloru pola
         assertEquals(Color.color(250 / 255.0, 245 / 255.0, 255 / 255.0), field.getFill());

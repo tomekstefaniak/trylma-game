@@ -47,9 +47,6 @@ public class IOManager {
         serverIOHandler.setDaemon(true);
         serverIOHandler.start();
 
-        // Wyświetlenie sceny lobby w interfejsie użytkownika
-        clientApp.showLobbyScene();
-
         // Wysłanie pseudonimu gracza do serwera
         try {
             serverIOHandler.sendMessageToServer(nickname);
@@ -59,6 +56,13 @@ public class IOManager {
         }
     }
 
+    public void gotModeFromLobby(String mode) {
+        if (mode.equals("game"))
+            Platform.runLater(() -> clientApp.showGameLobbyScene());
+        else 
+            Platform.runLater(() -> clientApp.showReplayLobbyScene());
+    }
+
     /**
      * Aktualizuje listę graczy w lobby.
      *
@@ -66,8 +70,8 @@ public class IOManager {
      */
     public void updateLobbyPlayersList(List<String> responseParsed) {
         Platform.runLater(() -> {
-            if (clientApp.clientState == ClientApp.ClientStates.LOBBY) {
-                clientApp.lobbyScene.updateLobbyPlayersList(responseParsed);
+            if (clientApp.clientState == ClientApp.ClientStates.GAME_LOBBY) {
+                clientApp.gameLobbyScene.updateLobbyPlayersList(responseParsed);
             }
         });
     }
@@ -116,6 +120,54 @@ public class IOManager {
             Platform.runLater(() -> clientApp.updateGame(turn, board));
         } catch (Exception e) {
             System.err.println("Error while updating the game: " + e.getMessage());
+            leaveServer();
+        }
+    }
+
+    /**
+     * Inicjalizuje grę na podstawie danych otrzymanych z serwera.
+     *
+     * @param variantString dane dotyczące wariantu gry
+     * @param turnString dane dotyczące aktualnej tury
+     * @param boardString dane dotyczące planszy
+     * @param idString identyfikator gracza
+     * @param playersString lista graczy
+     */
+    public void startReplay(
+        String variantString, 
+        String turnString, 
+        String boardString, 
+        String idString, 
+        String playersString
+    ) {
+        try {
+            String variant = extractValue(variantString);
+            int turn = Integer.parseInt(extractValue(turnString));
+            ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
+            int id = Integer.parseInt(extractValue(idString));
+            ArrayList<Pair<Integer, String>> players = parsePlayers(playersString);
+
+            Platform.runLater(() -> clientApp.showReplayScene(variant, turn, players, id, board));
+        } catch (Exception e) {
+            System.err.println("Error while starting the replay: " + e.getMessage());
+            leaveServer();
+        }
+    }
+
+    /**
+     * Aktualizuje stan gry na podstawie danych z serwera.
+     *
+     * @param turnString dane dotyczące aktualnej tury
+     * @param boardString dane dotyczące planszy
+     */
+    public void updateReplay(String turnString, String boardString) {
+        try {
+            int turn = Integer.parseInt(extractValue(turnString));
+            ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
+
+            Platform.runLater(() -> clientApp.updateReplay(turn, board));
+        } catch (Exception e) {
+            System.err.println("Error while updating the replay: " + e.getMessage());
             leaveServer();
         }
     }

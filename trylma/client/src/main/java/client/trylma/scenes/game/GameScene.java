@@ -1,4 +1,4 @@
-package client.trylma.scenes;
+package client.trylma.scenes.game;
 
 import client.trylma.ClientApp;
 

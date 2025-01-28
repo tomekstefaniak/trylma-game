@@ -21,29 +21,38 @@ public class Interpreter {
 		}
 
 		switch(command) {
-			case "state": return "game " + (server.game.state() ? "" : "not ") + "active";
+
+			case "state": 
+				return "game " + (server.game.state() ? "" : "not ") + "active";
+
 			case "move":
 				try {
 					server.game.move(player, args);
 					return "[ALL] moved " + args + "\nturn: " + server.game.getActivePlayer() + "\nboard: " + server.game.draw();
 				} catch(Exception e) {return e.getMessage();}
+
 			case "skip":
 				try {
 					server.game.nextPlayer(player);
 					return "[ALL] skipped" + "\nturn: " + server.game.getActivePlayer() + "\nboard: " + server.game.draw(); 
 				} catch(Exception e) {return e.getMessage();}
+
 			case "board":
 				try {return server.game.draw();}
 				catch(Exception e) {return e.getMessage();}
+
 			case "activeplayer":
 				try {return Integer.toString(server.game.getActivePlayer());}
 				catch(Exception e) {return e.getMessage();}
+
 			case "ended":
 				try {return "game " + (server.game.ended() ? "" : "not ") + "ended";}
 				catch(Exception e) {return e.getMessage();}
+
 			case "result":
 				try {return server.game.getResult().toString();}
 				catch(Exception e) {return e.getMessage();}
+
 			case "bot":
 				if (args.equals("add")) {
 					try {
@@ -56,9 +65,12 @@ public class Interpreter {
 						return "[ALL] removed 1 bot";
 					} catch(Exception e) {return e.getMessage();}
 				}
+
 			case "exit":
 				return "bye";
-			default: return "unknown command";
+
+			default: 
+				return "unknown command";
 		}
 	}
 }

@@ -8,7 +8,7 @@ import javafx.scene.shape.Circle;
  * Pole jest okręgiem, który może być własnością gracza, neutralnym polem
  * lub wybranym do wykonania ruchu.
  */
-public class Field extends Circle {
+public class GameField extends Circle {
 
     private final GameManager gameManager;
     private int x; // Współrzędna X pola
@@ -23,7 +23,7 @@ public class Field extends Circle {
      * @param x współrzędna X pola
      * @param y współrzędna Y pola
      */
-    public Field(GameManager gameManager, int ownerID, int x, int y) {
+    public GameField(GameManager gameManager, int ownerID, int x, int y) {
         super(14); // Ustawienie promienia pola
 
         this.gameManager = gameManager;

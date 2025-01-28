@@ -31,7 +31,7 @@ public class ServerResponseInterpreter {
      * @param serverResponse odpowiedź od serwera w postaci tekstu
      * @throws IOException w przypadku problemów z wejściem/wyjściem
      */
-    public void interpret(String serverResponse) throws IOException {
+    public void interpret(String serverResponse) throws IOException, IndexOutOfBoundsException {
         // Podziel string po spacji i usuń puste elementy
         List<String> responseParsed = Arrays.stream(serverResponse.split("\\s+"))
                                             .filter(s -> !s.isEmpty())
@@ -44,6 +44,30 @@ public class ServerResponseInterpreter {
                 ioManager.leaveServer();
                 serverIOHandler.running = false; // Kończymy wątek
                 break;
+
+            case "mode":
+                ioManager.gotModeFromLobby(responseParsed.get(1));
+
+            case "replay":
+                switch (responseParsed.get(1)) {
+                    case "started":
+                        // Gra rozpoczęła się: wczytanie danych początkowych gry
+                        ioManager.startReplay(
+                            serverIOHandler.in.readLine(), // wariant gry
+                            serverIOHandler.in.readLine(), // kto zaczyna
+                            serverIOHandler.in.readLine(), // plansza
+                            serverIOHandler.in.readLine(), // ID gracza
+                            serverIOHandler.in.readLine()  // lista graczy
+                        );
+                        break;
+                    case "next":
+                        // Aktualizacja planszy i tury
+                        ioManager.updateReplay(
+                            serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
+                            serverIOHandler.in.readLine()  // stan planszy
+                        );
+                        break;
+                }
 
             case "lobby":
                 // Aktualizacja listy graczy w lobby

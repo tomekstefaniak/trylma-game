@@ -18,7 +18,7 @@ public class ServerApp {
 	private final int maxCapacity;
 
 	/** Wariant gry rozgrywany na tym serwerze */
-	private final char gameVariant;
+	private final char variant;
 
 	/** Lista graczy na serwerze */
 	public ArrayList<ClientThread> players;
@@ -32,14 +32,14 @@ public class ServerApp {
 	 * Konstruktor klasy
 	 * @param port port serwera
 	 * @param maxCapacity maksymalna pojemnosc serwera
-	 * @param gameVariant wariant gry rozgrywanej na serwerze
+	 * @param variant wariant gry rozgrywanej na serwerze
 	 * @throws IOException jezeli wystapil blad przy pracy serwera
 	 * @throws IllegalArgumentException jezeli podano niepoprawny port serwera
 	 */
-	public ServerApp(int port, int maxCapacity, char gameVariant) throws IOException, IllegalArgumentException {
+	public ServerApp(int port, int maxCapacity, char variant) throws IOException, IllegalArgumentException {
 		this.port = port;
 		this.maxCapacity = maxCapacity;
-		this.gameVariant = gameVariant;
+		this.variant = variant;
 		run();
 	}
 
@@ -75,7 +75,7 @@ public class ServerApp {
 				
 				// nie pozwol na wejscie jezeli jest maksymalna liczba graczy na serwerze lub trwa gra
 				if (players.size() + bots.size() < maxCapacity && !game.state()) {
-					ClientThread client = new ClientThread(socket, this, false);
+					ClientThread client = new ClientThread(socket, this, false, variant);
 					client.start();
 					players.add(client);
 
@@ -159,11 +159,11 @@ public class ServerApp {
 	 */
 	public void startGame() {
 		try {
-			game.start(gameVariant, players.size() + bots.size());
+			game.start(variant, players.size() + bots.size());
 			System.out.println("[SERVER] started game");
 			
 			printForAll("started");
-			printForAll("variant " + gameVariant);
+			printForAll("variant " + variant);
 			printForAll("turn " + game.getActivePlayer());
 			printForAll("board " + game.draw());
 			
@@ -193,14 +193,19 @@ public class ServerApp {
 		try {
 			int port, maxCapacity; 
 
-			try {port = Integer.parseInt(args[0]);} 
-			catch(NumberFormatException e) {throw new IllegalArgumentException("ServerApp.main: invalid port");}
+			try { port = Integer.parseInt(args[0]); } 
+			catch(NumberFormatException e) { throw new IllegalArgumentException("ServerApp.main: invalid port"); }
 
 			try {maxCapacity = Integer.parseInt(args[1]);} 
-			catch(NumberFormatException e) {throw new IllegalArgumentException("ServerApp.main: invalid capacity");}
+			catch(NumberFormatException e) { throw new IllegalArgumentException("ServerApp.main: invalid capacity"); }
 
-			char gameVariant = args[2].charAt(0);
-			new ServerApp(port, maxCapacity, gameVariant);
+			// Sprawdzenie poprawności wariantu
+
+			if (!args[2].matches("r|c|o"))
+				throw new IllegalArgumentException("SeverApp.main: wrong variant (cmd line arg at idx 2)");
+
+			char variant = args[2].charAt(0);
+			new ServerApp(port, maxCapacity, variant);
 		} 
 		catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }
 		catch (IndexOutOfBoundsException e) { System.out.println("ServerApp.main: invalid number of arguments"); }

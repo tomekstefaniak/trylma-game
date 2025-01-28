@@ -1,7 +1,12 @@
 package client.trylma;
 
 import client.trylma.scenes.*;
+import client.trylma.scenes.game.GameScene;
+import client.trylma.scenes.game.ReplayScene;
+import client.trylma.scenes.lobby.GameLobbyScene;
+import client.trylma.scenes.lobby.ReplayLobbyScene;
 import client.trylma.game.GameManager;
+import client.trylma.game.ReplayManager;
 import client.trylma.io.IOManager;
 
 import javafx.application.Application;
@@ -23,7 +28,7 @@ public class ClientApp extends Application {
      * GAME - aktywna gra
      */
     public static enum ClientStates {
-        JOIN, LOBBY, GAME, REPLAY
+        JOIN, REPLAY_LOBBY, GAME_LOBBY, GAME, REPLAY
     }
 
     /** Domyślny port serwera */
@@ -35,6 +40,9 @@ public class ClientApp extends Application {
     /** Manager gry - kontroluje logikę gry */
     public GameManager gameManager;
 
+    /** Manager replaye - kontroluje logike replay */
+    public ReplayManager replayManager;
+
     /** Manager komunikacji z serwerem (wejście/wyjście) */
     public IOManager ioManager;
 
@@ -44,14 +52,17 @@ public class ClientApp extends Application {
     /** Scena łączenia z serwerem */
     public JoinScene joinScene;
 
-    /** Scena lobby */
-    public LobbyScene lobbyScene;
+    /** Scena lobby gry */
+    public GameLobbyScene gameLobbyScene;
+
+    /** Scena lobby replay */
+    public ReplayLobbyScene replayLobbyScene;
 
     /** Scena gry */
     public GameScene gameScene;
 
-     /** Scena powtórki */
-     public ReplayScene replayScene;
+    /** Scena powtórki */
+    public ReplayScene replayScene;
 
     /**
      * Główna metoda startowa JavaFX, wywoływana po uruchomieniu aplikacji.
@@ -90,14 +101,16 @@ public class ClientApp extends Application {
             ioManager.stopConnection();
 
             // Uwolnij zasoby scen w zależności od stanu aplikacji
-            if (clientState == ClientStates.LOBBY) {
-                lobbyScene = null; // lobbyScene zgarnie garbage collector
+            if (clientState == ClientStates.REPLAY_LOBBY) {
+                replayLobbyScene = null; // replayLobbyScene zgarnie garbage collector
+            } else if (clientState == ClientStates.GAME_LOBBY) {
+                gameLobbyScene = null; // gameLobbyScene zgarnie garbage collector
             } else if (clientState == ClientStates.GAME) {
                 gameScene = null; // gameScene zgarnie garbage collector
                 gameManager = null; // gameManager zgarnie garbage collector
             } else {
                 replayScene = null; // replayScene zgarnie garbage collector
-                // replayManager = null; // replayManager zgarnie garbage collector
+                replayManager = null; // replayManager zgarnie garbage collector
             }
         }
 
@@ -110,13 +123,26 @@ public class ClientApp extends Application {
      * Ustawia scenę lobby.
      * Tworzy nową scenę lobby i ustawia ją jako aktywną.
      */
-    public void showLobbyScene() {
-        clientState = ClientStates.LOBBY;
+    public void showGameLobbyScene() {
+        clientState = ClientStates.GAME_LOBBY;
 
         // Inicjalizacja sceny lobby
-        lobbyScene = new LobbyScene(this);
-        primaryStage.setScene(lobbyScene);
+        gameLobbyScene = new GameLobbyScene(this);
+        primaryStage.setScene(gameLobbyScene);
     }
+
+    /**
+     * Ustawia scenę lobby.
+     * Tworzy nową scenę lobby i ustawia ją jako aktywną.
+     */
+    public void showReplayLobbyScene() {
+        clientState = ClientStates.REPLAY_LOBBY;
+
+        // Inicjalizacja sceny lobby
+        replayLobbyScene = new ReplayLobbyScene(this);
+        primaryStage.setScene(replayLobbyScene);
+    }
+
 
     /**
      * Ustawia scenę gry.
@@ -145,7 +171,7 @@ public class ClientApp extends Application {
         primaryStage.setScene(gameScene);
 
         // Uwolnienie zasobów sceny lobby
-        lobbyScene = null; // lobbyScene zgarnie garbage collector
+        gameLobbyScene = null; // lobbyScene zgarnie garbage collector
     }
 
     /**
@@ -172,10 +198,10 @@ public class ClientApp extends Application {
         // gameManager = new GameManager(gameScene, ioManager, variant, turn, players, id, board);
 
         // Ustawienie nowej sceny
-        primaryStage.setScene(gameScene);
+        primaryStage.setScene(replayScene);
 
         // Uwolnienie zasobów sceny lobby
-        lobbyScene = null; // lobbyScene zgarnie garbage collector
+        replayLobbyScene = null; // lobbyScene zgarnie garbage collector
     }
 
     /**
@@ -188,6 +214,18 @@ public class ClientApp extends Application {
     public void updateGame(int turn, ArrayList<String> board) {
         gameManager.updateGameScene(board);
         gameManager.updateGameState(turn);
+    }
+
+    /**
+     * Aktualizuje stan gry, przekazując nową planszę i numer tury.
+     * Wywoływana przez manager komunikacji, gdy serwer wysyła aktualizację gry.
+     *
+     * @param turn numer aktualnej tury
+     * @param board nowy stan planszy
+     */
+    public void updateReplay(int turn, ArrayList<String> board) {
+        replayManager.updateReplayScene(board);
+        replayManager.updateReplayState(turn);
     }
 
     /**

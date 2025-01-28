@@ -1,4 +1,4 @@
-package client.trylma.scenes;
+package client.trylma.scenes.lobby;
 
 import client.trylma.ClientApp;
 
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Scena lobby, wyświetlająca listę graczy oraz przycisk powrotu do ekranu JoinScene.
  */
-public class LobbyScene extends Scene {
+public class GameLobbyScene extends Scene {
 
     /** Kontener na dynamicznie dodawane etykiety reprezentujące listę graczy. */
     private final VBox playersContainer;
@@ -23,7 +23,7 @@ public class LobbyScene extends Scene {
      *
      * @param clientApp instancja głównej aplikacji klienta
      */
-    public LobbyScene(ClientApp clientApp) {
+    public GameLobbyScene(ClientApp clientApp) {
         super(new VBox(20), 750, 750);
 
         // Inicjalizacja kontenera na graczy
@@ -62,17 +62,17 @@ public class LobbyScene extends Scene {
      * @return skonfigurowany przycisk
      */
     private Button createAddBotButton(ClientApp clientApp) {
-        Button backButton = new Button("Add Bot");
-        backButton.setStyle(
+        Button addBotButton = new Button("Add Bot");
+        addBotButton.setStyle(
             "-fx-background-color: rgb(90, 90, 255); " +
             "-fx-text-fill: white; " +
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-padding: 10 20 10 20;" +
-            "-fx-pref-width: 100;"
+            "-fx-pref-width: 160;"
         );
-        backButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot add"));
-        return backButton;
+        addBotButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot add"));
+        return addBotButton;
     }
 
     /**
@@ -82,17 +82,17 @@ public class LobbyScene extends Scene {
      * @return skonfigurowany przycisk
      */
     private Button createRemoveBotButton(ClientApp clientApp) {
-        Button backButton = new Button("Remove Bot");
-        backButton.setStyle(
+        Button removeBotButton = new Button("Remove Bot");
+        removeBotButton.setStyle(
             "-fx-background-color: rgb(90, 90, 255); " +
             "-fx-text-fill: white; " +
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-padding: 10 20 10 20;" +
-            "-fx-pref-width: 100;"
+            "-fx-pref-width: 160;"
         );
-        backButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot remove"));
-        return backButton;
+        removeBotButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("bot remove"));
+        return removeBotButton;
     }
 
     /**
@@ -109,7 +109,7 @@ public class LobbyScene extends Scene {
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-padding: 10 20 10 20;" +
-            "-fx-pref-width: 100;"
+            "-fx-pref-width: 160;"
         );
         backButton.setOnAction(event -> clientApp.showJoinScene());
         return backButton;

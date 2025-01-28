@@ -31,8 +31,12 @@ public class ClientThread extends Thread {
 	/** PrintWriter wysylajacy output serwera do klienta */
 	private PrintWriter out;
 
+	/** Tryb sesji serwera */
+	private char variant;
+
 	/**
-	 * Konstruktor klasy
+	 * Konstruktor klasy na wypadek blokowania połączenia z klientem przy pełnym lobby 
+	 * 
 	 * @param socket socket laczacy klienta z serwerem
 	 * @param server instancja serwera, z ktorym laczy sie klient
 	 * @param deny flaga, mowiaca czy serwer pozwolil na polaczenie
@@ -49,6 +53,26 @@ public class ClientThread extends Thread {
 	}
 
 	/**
+	 * Konstruktor klasy
+	 * 
+	 * @param socket socket laczacy klienta z serwerem
+	 * @param server instancja serwera, z ktorym laczy sie klient
+	 * @param deny flaga, mowiaca czy serwer pozwolil na polaczenie
+	 */
+	public ClientThread(Socket socket, ServerApp server, boolean deny, char variant) {
+		this.socket = socket;
+		this.server = server;
+
+		id = -1; // Przed rozpoczęciem rozgrywki id jest ustawione na -1
+		nickname = "Player"; // Domyslny nickname
+
+		this.deny = deny;
+		this.ended = false;
+
+		this.variant = variant;
+	}
+
+	/**
 	 * Metoda watku, ktora posredniczy miedzy klientem i serwerem
 	 */
 	@Override
@@ -57,10 +81,16 @@ public class ClientThread extends Thread {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 
-			// wyslanie polecenia rozlaczenia do klienta, jezeli serwer nie zezwolil na polaczenie
+			// Wysłanie polecenia rozlaczenia do klienta, jezeli serwer nie zezwolil na polaczenie
 			if (deny)
 				out.println("disconnect");
 			else {
+				// Powiadomienie gracza o modzie pracy serwera
+				switch (variant) {
+					case 'r': print("mode replay"); break;
+					default: print("mode game");
+				}
+
 				// ustaw nickname, czyli pierwszą wiadomość jaką wyśle klient
 				nickname = in.readLine();
 				
@@ -77,11 +107,11 @@ public class ClientThread extends Thread {
 					catch(IOException e) {
 						System.out.println("[SERVER] player " + id + " disconnected");
 						
-						ended = true; // ustawienie flagi ended dla update
+						ended = true; // Ustawienie flagi ended dla update
 						server.updatePlayers();
 						server.updateLobbyPlayers();
 						
-						break; // jedyne miejsce zrywające pętlę
+						break; // Jedyne miejsce zrywające pętlę
 					}
 					System.out.println("Client " + id + " > " + messageFromClient);
 					

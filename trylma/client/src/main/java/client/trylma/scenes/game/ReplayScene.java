@@ -1,4 +1,4 @@
-package client.trylma.scenes;
+package client.trylma.scenes.game;
 
 import client.trylma.ClientApp;
 
@@ -127,7 +127,7 @@ public class ReplayScene extends Scene {
         exitButton.setOnAction(event -> clientApp.showJoinScene());
 
         // Przycisk SKIP
-        Button skipButton = new Button("SKIP");
+        Button skipButton = new Button("NEXT");
         skipButton.setStyle(
             "-fx-font-size: 14; " +
             "-fx-background-color: rgb(60, 60, 90); " +
@@ -137,7 +137,7 @@ public class ReplayScene extends Scene {
             "-fx-pref-height: 30; " +
             "-fx-pref-width: 80;"
         );
-        skipButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("skip"));
+        skipButton.setOnAction(event -> clientApp.ioManager.sendMessageToServer("replay next"));
 
         // Dodanie przycisków do paska
         buttonsBar.getChildren().addAll(exitButton, skipButton);
