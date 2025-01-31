@@ -136,18 +136,16 @@ public class IOManager {
     public void startReplay(
         String variantString, 
         String turnString, 
-        String boardString, 
-        String idString, 
+        String boardString,
         String playersString
     ) {
         try {
             String variant = extractValue(variantString);
             int turn = Integer.parseInt(extractValue(turnString));
             ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
-            int id = Integer.parseInt(extractValue(idString));
             ArrayList<Pair<Integer, String>> players = parsePlayers(playersString);
 
-            Platform.runLater(() -> clientApp.showReplayScene(variant, turn, players, id, board));
+            Platform.runLater(() -> clientApp.showReplayScene(variant, turn, players, board));
         } catch (Exception e) {
             System.err.println("Error while starting the replay: " + e.getMessage());
             leaveServer();

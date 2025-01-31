@@ -187,15 +187,14 @@ public class ClientApp extends Application {
     public void showReplayScene(
         String variant, 
         int turn, 
-        ArrayList<Pair<Integer, String>> players, 
-        int id, 
+        ArrayList<Pair<Integer, String>> players,
         ArrayList<String> board
     ) {
         clientState = ClientStates.REPLAY;
 
         // Tworzenie sceny gry i managera gry
         replayScene = new ReplayScene(players, this);
-        // gameManager = new GameManager(gameScene, ioManager, variant, turn, players, id, board);
+        replayManager = new ReplayManager(replayScene, ioManager, variant, turn, players, board);
 
         // Ustawienie nowej sceny
         primaryStage.setScene(replayScene);
@@ -212,8 +211,8 @@ public class ClientApp extends Application {
      * @param board nowy stan planszy
      */
     public void updateGame(int turn, ArrayList<String> board) {
-        gameManager.updateGameScene(board);
-        gameManager.updateGameState(turn);
+        gameManager.updateScene(board);
+        gameManager.updateState(turn);
     }
 
     /**
@@ -224,8 +223,8 @@ public class ClientApp extends Application {
      * @param board nowy stan planszy
      */
     public void updateReplay(int turn, ArrayList<String> board) {
-        replayManager.updateReplayScene(board);
-        replayManager.updateReplayState(turn);
+        replayManager.updateScene(board);
+        replayManager.updateState(turn);
     }
 
     /**

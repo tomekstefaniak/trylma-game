@@ -2,7 +2,6 @@ package client.trylma.game;
 
 import client.trylma.io.IOManager;
 import client.trylma.scenes.game.GameScene;
-import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import java.util.ArrayList;
 import javafx.scene.layout.HBox;
@@ -13,18 +12,7 @@ import javafx.scene.layout.HBox;
  * - aktualizację planszy na podstawie danych z serwera,
  * - zarządzanie turami graczy.
  */
-public class GameManager {
-
-    /** Kolory przypisane polom graczy i planszy. */
-    public static final Color[] COLORS = {
-        Color.color(250 / 255.0, 245 / 255.0, 255 / 255.0), // 0, white
-        Color.color(25 / 255.0, 25 / 255.0, 40 / 255.0), // 1, black
-        Color.color(255 / 255.0, 100 / 255.0, 100 / 255.0), // 2, red
-        Color.color(100 / 255.0, 180 / 255.0, 255 / 255.0), // 3, blue
-        Color.color(55 / 255.0, 150 / 255.0, 0 / 255.0), // 4, green
-        Color.color(255 / 255.0, 255 / 255.0, 0 / 255.0), // 5, yellow
-        Color.color(250 / 255.0, 210 / 255.0, 150 / 255.0) // 6, neutral field
-    };
+public class GameManager implements IManager {
 
     /** Lista wcięć pól na planszy, odpowiadających każdemu wierszowi. */
     private static final int[] FIELDS_INDENTS = {
@@ -38,7 +26,6 @@ public class GameManager {
     private final ArrayList<Pair<Integer, String>> players;
 
     public final int thisPlayerID;
-
     public boolean canMove;
     public volatile String moveString;
     public GameField fieldAboutToMove;
@@ -74,7 +61,7 @@ public class GameManager {
         initializeBoard(board);
 
         // Ustawienie początkowego stanu gry
-        updateGameState(turn);
+        updateState(turn);
     }
 
     /**
@@ -82,7 +69,7 @@ public class GameManager {
      *
      * @param board lista wierszy planszy przesłanych przez serwer
      */
-    private void initializeBoard(ArrayList<String> board) {
+    public void initializeBoard(ArrayList<String> board) {
         for (int row = 0; row < board.size(); row++) {
             HBox rowContainer = (HBox) gameScene.getFieldsGrid().getChildren().get(row);
 
@@ -108,7 +95,7 @@ public class GameManager {
      *
      * @param board lista wierszy planszy przesłanych przez serwer
      */
-    public void updateGameScene(ArrayList<String> board) {
+    public void updateScene(ArrayList<String> board) {
         for (int row = 0; row < board.size(); row++) {
             HBox rowContainer = (HBox) gameScene.getFieldsGrid().getChildren().get(row);
 
@@ -128,7 +115,7 @@ public class GameManager {
      *
      * @param turn numer gracza, którego jest teraz tura
      */
-    public void updateGameState(int turn) {
+    public void updateState(int turn) {
         System.out.println("You are player with ID: " + thisPlayerID + " , now moves palyer with ID: " + turn);
 
         // Znajdź pseudonim aktualnego gracza wykonującego ruch
@@ -157,7 +144,7 @@ public class GameManager {
      * @param symbol symbol pola (znak z serwera)
      * @return identyfikator gracza
      */
-    private int getPlayerIDFromChar(char symbol) {
+    public int getPlayerIDFromChar(char symbol) {
         switch (symbol) {
             case '0': return 0;
             case '1': return 1;

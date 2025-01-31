@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Scena gry głównej (GameScene). Zawiera elementy interfejsu użytkownika,
  * takie jak: lista graczy, informacje o turze, plansza gry oraz przyciski "EXIT" i "SKIP".
  */
-public class ReplayScene extends Scene {
+public class ReplayScene extends Scene implements IGameScene {
 
     /** Pasek nawigacyjny z informacjami o graczach i aktualnej turze. */
     private HBox topBar1;
@@ -70,7 +70,7 @@ public class ReplayScene extends Scene {
      * @param players lista graczy z ich identyfikatorami i pseudonimami
      * @return pasek (HBox) z informacjami o graczach
      */
-    private HBox createPlayersBar(ArrayList<Pair<Integer, String>> players) {
+    public HBox createPlayersBar(ArrayList<Pair<Integer, String>> players) {
         HBox playersBar = new HBox();
         playersBar.setSpacing(15);
         playersBar.setAlignment(Pos.CENTER);
@@ -106,7 +106,7 @@ public class ReplayScene extends Scene {
      * @param clientApp referencja do głównej klasy aplikacji klienta
      * @return pasek (HBox) z przyciskami
      */
-    private HBox createButtonsBar(ClientApp clientApp) {
+    public HBox createButtonsBar(ClientApp clientApp) {
         HBox buttonsBar = new HBox();
         buttonsBar.setAlignment(Pos.CENTER);
         buttonsBar.setSpacing(10);
@@ -150,7 +150,7 @@ public class ReplayScene extends Scene {
      *
      * @return kontener VBox z siatką pól gry
      */
-    private VBox createFieldsGrid() {
+    public VBox createFieldsGrid() {
         VBox grid = new VBox();
         grid.setAlignment(Pos.CENTER);
         grid.setSpacing(9); // Odstępy między wierszami

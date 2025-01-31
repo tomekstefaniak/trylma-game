@@ -33,7 +33,7 @@ public class ServerIOHandler extends Thread {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            System.err.println("Błąd podczas inicjalizacji komunikacji: " + e.getMessage());
+            System.err.println("Error during communication initialization: " + e.getMessage());
         }
     }
 
@@ -59,9 +59,9 @@ public class ServerIOHandler extends Thread {
                 interpreter.interpret(serverResponse);
             }
         } catch (SocketException e) {
-            System.out.println("Socket zamknięty.");
+            System.out.println("Socket closed");
         } catch (IOException e) {
-            System.err.println("Błąd podczas komunikacji: " + e.getMessage());
+            System.err.println("Error during communication: " + e.getMessage());
         } finally {
             stopConnection();
         }

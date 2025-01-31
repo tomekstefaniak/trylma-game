@@ -56,7 +56,6 @@ public class ServerResponseInterpreter {
                             serverIOHandler.in.readLine(), // wariant gry
                             serverIOHandler.in.readLine(), // kto zaczyna
                             serverIOHandler.in.readLine(), // plansza
-                            serverIOHandler.in.readLine(), // ID gracza
                             serverIOHandler.in.readLine()  // lista graczy
                         );
                         break;

@@ -2,7 +2,6 @@ package client.trylma.game;
 
 import client.trylma.io.IOManager;
 import client.trylma.scenes.game.ReplayScene;
-import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import java.util.ArrayList;
 import javafx.scene.layout.HBox;
@@ -13,28 +12,11 @@ import javafx.scene.layout.HBox;
  * - aktualizację planszy na podstawie danych z serwera,
  * - zarządzanie turami graczy.
  */
-public class ReplayManager {
+public class ReplayManager implements IManager {
 
-    /** Kolory przypisane polom graczy i planszy. */
-    public static final Color[] COLORS = {
-        Color.color(250 / 255.0, 245 / 255.0, 255 / 255.0), // 0, white
-        Color.color(25 / 255.0, 25 / 255.0, 40 / 255.0), // 1, black
-        Color.color(255 / 255.0, 100 / 255.0, 100 / 255.0), // 2, red
-        Color.color(100 / 255.0, 180 / 255.0, 255 / 255.0), // 3, blue
-        Color.color(55 / 255.0, 150 / 255.0, 0 / 255.0), // 4, green
-        Color.color(255 / 255.0, 255 / 255.0, 0 / 255.0), // 5, yellow
-        Color.color(250 / 255.0, 210 / 255.0, 150 / 255.0) // 6, neutral field
-    };
-
-    private final ReplayScene replayScene;
     public final IOManager ioManager;
+    private final ReplayScene replayScene;
     private final ArrayList<Pair<Integer, String>> players;
-
-    public final int thisPlayerID;
-
-    public boolean canMove;
-    public volatile String moveString;
-    public ReplayField fieldAboutToMove;
 
     /**
      * Konstruktor klasy ReplayManager. Inicjalizuje planszę i ustawia początkowy stan gry.
@@ -52,20 +34,18 @@ public class ReplayManager {
         IOManager ioManager,
         String variant, 
         int turn, 
-        ArrayList<Pair<Integer, String>> players, 
-        int id, 
+        ArrayList<Pair<Integer, String>> players,
         ArrayList<String> board
     ) {
         this.replayScene = replayScene;
         this.ioManager = ioManager;
-        this.thisPlayerID = id;
         this.players = players;
 
         // Inicjalizacja planszy gry
         initializeBoard(board);
 
         // Ustawienie początkowego stanu gry
-        updateReplayState(turn);
+        updateState(turn);
     }
 
     /**
@@ -73,7 +53,7 @@ public class ReplayManager {
      *
      * @param board lista wierszy planszy przesłanych przez serwer
      */
-    private void initializeBoard(ArrayList<String> board) {
+    public void initializeBoard(ArrayList<String> board) {
         for (int row = 0; row < board.size(); row++) {
             HBox rowContainer = (HBox) replayScene.getFieldsGrid().getChildren().get(row);
 
@@ -97,7 +77,7 @@ public class ReplayManager {
      *
      * @param board lista wierszy planszy przesłanych przez serwer
      */
-    public void updateReplayScene(ArrayList<String> board) {
+    public void updateScene(ArrayList<String> board) {
         for (int row = 0; row < board.size(); row++) {
             HBox rowContainer = (HBox) replayScene.getFieldsGrid().getChildren().get(row);
 
@@ -117,8 +97,8 @@ public class ReplayManager {
      *
      * @param turn numer gracza, którego jest teraz tura
      */
-    public void updateReplayState(int turn) {
-        System.out.println("You are player with ID " + thisPlayerID + ". Now it's player with ID " + turn + "'s turn.");
+    public void updateState(int turn) {
+        System.out.println("Now it's player with ID " + turn + "'s turn.");
 
         // Znajdź pseudonim aktualnego gracza wykonującego ruch
         String currentPlayerNickname = players.stream()
@@ -137,7 +117,7 @@ public class ReplayManager {
      * @param symbol symbol pola (znak z serwera)
      * @return identyfikator gracza
      */
-    private int getPlayerIDFromChar(char symbol) {
+    public int getPlayerIDFromChar(char symbol) {
         switch (symbol) {
             case '0': return 0;
             case '1': return 1;
