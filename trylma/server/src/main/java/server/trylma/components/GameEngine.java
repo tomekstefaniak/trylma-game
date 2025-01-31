@@ -2,14 +2,24 @@ package server.trylma.components;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import server.trylma.ServerApp;
 import server.trylma.bot.Bot;
+import server.trylma.database.MoveService;
 import server.trylma.game.*;
 
 /**
  * Klasa odpowiadajaca za przeprowadzanie rozgrywki
  */
 public class GameEngine {
+	private int port;
+
+	private int currentGame;
+
+	@Autowired
+	private MoveService moveService;
+
 	/** Instancja gry */
 	private Game game;
 
@@ -21,6 +31,10 @@ public class GameEngine {
 
 	/** Lista graczy, ktorzy opuscili rozgrywke */
 	private ArrayList<Integer> playersOut;
+
+	public GameEngine(int port) {
+		this.port = port;
+	}
 
 	/**
 	 * Obecny stan gry
@@ -37,7 +51,7 @@ public class GameEngine {
 	 * @param players liczba graczy
 	 * @throws IllegalArgumentException jezeli nie mozna zaczac gry (aktywna gra, nieznany wariant, zla liczba graczy)
 	 */
-	public void start(char variant, int players) throws IllegalArgumentException {
+	public void start(int gameNumber, char variant, int players) throws IllegalArgumentException {
 		if (state()) throw new IllegalArgumentException("GameEngine.start: game active");
 		switch(variant) {
 			case 'c':
@@ -52,6 +66,7 @@ public class GameEngine {
 		this.players = players;
 		this.activePlayer = new Random().nextInt(this.players);
 		this.playersOut = new ArrayList<Integer>();
+		this.currentGame = gameNumber;
 	}
 
 	/**
@@ -72,6 +87,7 @@ public class GameEngine {
 		} catch(Exception e) {throw new IllegalArgumentException("GameEngine.move: invalid field");}
 		try {
 			game.move(player, xS, yS, xF, yF);
+			// moveService.saveMove(port, currentGame, draw());
 			nextPlayer(activePlayer);
 		} catch(IllegalArgumentException e) {throw e;}
 	}

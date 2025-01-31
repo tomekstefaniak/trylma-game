@@ -12,6 +12,9 @@ import server.trylma.components.*;
  * Klasa serwera, na ktorym odbywa sie rozgrywka
  */
 public class ServerApp {
+	public final int port;
+
+	private int gameNumber;
 
 	/** Maksymalna pojemnosc serwera, takze liczba graczy, dla ktorych odbywa sie rozgrywka */
 	private final int maxCapacity;
@@ -36,8 +39,10 @@ public class ServerApp {
 	 * @throws IllegalArgumentException jezeli podano niepoprawny port serwera
 	 */
 	public ServerApp(int port, int maxCapacity, char variant) throws IOException, IllegalArgumentException {
+		this.port = port;
 		this.maxCapacity = maxCapacity;
 		this.variant = variant;
+		this.gameNumber = 1;
 
 		// Utwórz server socket i włącz prawidłowy loop w zależności od trybu serwera (game albo replay)
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
@@ -102,7 +107,7 @@ public class ServerApp {
 	 */
 	private void runGameServerLoop(ServerSocket serverSocket) throws IOException, IllegalArgumentException {
 		this.bots = new ArrayList<Bot>();
-		this.game = new GameEngine();
+		this.game = new GameEngine(port);
 
 		while (true) {
 			Socket socket = serverSocket.accept();
@@ -191,7 +196,8 @@ public class ServerApp {
 	 */
 	public void startGame() {
 		try {
-			game.start(variant, players.size() + bots.size());
+			game.start(gameNumber, variant, players.size() + bots.size());
+			gameNumber++;
 			System.out.println("[SERVER] started game");
 			
 			printForAll("started");
@@ -242,5 +248,5 @@ public class ServerApp {
 		catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }
 		catch (IndexOutOfBoundsException e) { System.out.println("ServerApp.main: invalid number of arguments"); }
 		catch (IOException e) { System.out.println(e.getMessage()); }
-	}
+	}    
 }
