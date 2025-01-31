@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import server.trylma.*;
+import server.trylma.components.GameEngine;
 import server.trylma.game.*;
 
 public class BotBrain {

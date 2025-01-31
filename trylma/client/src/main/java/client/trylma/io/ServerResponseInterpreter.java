@@ -34,8 +34,8 @@ public class ServerResponseInterpreter {
     public void interpret(String serverResponse) throws IOException, IndexOutOfBoundsException {
         // Podziel string po spacji i usuń puste elementy
         List<String> responseParsed = Arrays.stream(serverResponse.split("\\s+"))
-                                            .filter(s -> !s.isEmpty())
-                                            .collect(Collectors.toList());
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toList());
 
         // Obsługa różnych typów wiadomości od serwera
         switch (responseParsed.get(0)) {
@@ -76,19 +76,19 @@ public class ServerResponseInterpreter {
             case "started":
                 // Gra rozpoczęła się: wczytanie danych początkowych gry
                 ioManager.startGame(
-                        serverIOHandler.in.readLine(), // wariant gry
-                        serverIOHandler.in.readLine(), // kto zaczyna
-                        serverIOHandler.in.readLine(), // plansza
-                        serverIOHandler.in.readLine(), // ID gracza
-                        serverIOHandler.in.readLine()  // lista graczy
+                    serverIOHandler.in.readLine(), // wariant gry
+                    serverIOHandler.in.readLine(), // kto zaczyna
+                    serverIOHandler.in.readLine(), // plansza
+                    serverIOHandler.in.readLine(), // ID gracza
+                    serverIOHandler.in.readLine()  // lista graczy
                 );
                 break;
 
             case "next":
                 // Aktualizacja planszy i tury
                 ioManager.updateGame(
-                        serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
-                        serverIOHandler.in.readLine()  // stan planszy
+                    serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
+                    serverIOHandler.in.readLine()  // stan planszy
                 );
                 break;
 
@@ -102,8 +102,8 @@ public class ServerResponseInterpreter {
                 if (responseParsed.size() > 1 &&
                         (responseParsed.get(1).equals("moved") || responseParsed.get(1).equals("skipped"))) {
                     ioManager.updateGame(
-                            serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
-                            serverIOHandler.in.readLine()  // stan planszy
+                        serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
+                        serverIOHandler.in.readLine()  // stan planszy
                     );
                 }
                 break;
@@ -113,7 +113,6 @@ public class ServerResponseInterpreter {
                 if (serverResponse.matches("GameEngine.move: invalid field|invalid starting field|invalid end field|no piece on starting field|wrong piece on starting field|other piece on end field|illegal move|invalid field")) {
                     ioManager.repeatMove();
                 }
-                break;
         }
     }
 }

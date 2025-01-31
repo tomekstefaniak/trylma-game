@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import server.trylma.components.GameEngine;
+
 public class GameEngineTest {
 	@Test
 	public void testState() {

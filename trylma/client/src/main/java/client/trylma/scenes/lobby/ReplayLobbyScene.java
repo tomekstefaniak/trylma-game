@@ -114,7 +114,7 @@ public class ReplayLobbyScene extends Scene {
         startButton.setOnAction(event -> {
             // try { 
                 String gameID = gameIDField.getText();
-                clientApp.ioManager.sendMessageToServer("replay " + gameID);
+                clientApp.ioManager.sendMessageToServer("replay ID " + gameID);
                 System.out.println("Send request to start replay with ID: " + gameID);
             // } catch (Exception e) {}
         });

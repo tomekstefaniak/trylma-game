@@ -1,8 +1,8 @@
 package client.trylma;
 
-import client.trylma.scenes.*;
 import client.trylma.scenes.game.GameScene;
 import client.trylma.scenes.game.ReplayScene;
+import client.trylma.scenes.join.JoinScene;
 import client.trylma.scenes.lobby.GameLobbyScene;
 import client.trylma.scenes.lobby.ReplayLobbyScene;
 import client.trylma.game.GameManager;

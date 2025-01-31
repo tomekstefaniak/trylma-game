@@ -10,5 +10,5 @@ W przypadku uruchamiania skryptów cwd musi być ścieżką do repozytorium. Opi
 > pkg_client.sh robi clean i package tylko na projekcie podrzędnym klienta  
 > pkg_server.sh robi clean i package tylko na projekcie podrzędnym serwera  
 > run_client.sh uruchamia klienta
-> run_n_clients.sh uruchamia n klientów gdzie n podaje się jako argument
+> run_clients.sh uruchamia n klientów gdzie n podaje się jako argument
 > run_server.sh uruchamia serwer z podanymi argumentami

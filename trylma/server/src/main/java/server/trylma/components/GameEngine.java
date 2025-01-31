@@ -1,7 +1,8 @@
-package server.trylma;
+package server.trylma.components;
 
 import java.util.*;
 
+import server.trylma.ServerApp;
 import server.trylma.bot.Bot;
 import server.trylma.game.*;
 

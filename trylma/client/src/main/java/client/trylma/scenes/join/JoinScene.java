@@ -1,4 +1,4 @@
-package client.trylma.scenes;
+package client.trylma.scenes.join;
 
 import client.trylma.ClientApp;
 
@@ -105,7 +105,7 @@ public class JoinScene extends Scene {
 
         // Akcja po kliknięciu przycisku
         connectButton.setOnAction(event -> {
-            if (validateInputs(nicknameField, portField)) {
+            if (validateInput(portField)) {
                 try {
                     String nickname = nicknameField.getText();
                     int port = Integer.parseInt(portField.getText());
@@ -130,15 +130,9 @@ public class JoinScene extends Scene {
      * @param portField pole tekstowe portu
      * @return true, jeśli dane są poprawne; false w przeciwnym razie
      */
-    private boolean validateInputs(TextField nicknameField, TextField portField) {
-        String nickname = nicknameField.getText();
+    private boolean validateInput(TextField portField) {
         String portText = portField.getText();
 
-        // Sprawdzenie, czy pola są puste
-        if (nickname.isEmpty()) {
-            System.out.println("Nickname must not be empty!");
-            return false;
-        }
         if (portText.isEmpty()) {
             System.out.println("Port must not be empty!");
             return false;

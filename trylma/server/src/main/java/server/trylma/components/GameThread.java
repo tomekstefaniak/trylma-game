@@ -1,12 +1,14 @@
 
-package server.trylma;
+package server.trylma.components;
 
 import java.util.ArrayList;
+
+import server.trylma.ServerApp;
 
 /**
  * Klasa odpowiadajaca za zarzadzanie gra w poziomu serwera
  */
-class GameThread extends Thread {
+public class GameThread extends Thread {
 	/** Instancja serwera, na ktorym odbywa sie gra */
 	private ServerApp serverApp;
 

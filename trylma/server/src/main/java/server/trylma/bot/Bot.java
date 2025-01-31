@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import server.trylma.*;
+import server.trylma.components.GameEngine;
 
 public class Bot {
 	private static String[] botNicknames = {

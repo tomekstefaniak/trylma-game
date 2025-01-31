@@ -1,7 +1,9 @@
-package server.trylma;
+package server.trylma.components;
 
 import java.io.*;
 import java.net.*;
+
+import server.trylma.ServerApp;
 
 /**
  * Klasa odpowiadajaca za polaczenie klienta z serwerem
@@ -33,6 +35,9 @@ public class ClientThread extends Thread {
 
 	/** Tryb sesji serwera */
 	private char variant;
+
+	//* Silnik replay, tworzony jeśli tryb serwera to replay */
+	public ReplayEngine replayEngine;
 
 	/**
 	 * Konstruktor klasy na wypadek blokowania połączenia z klientem przy pełnym lobby 
@@ -109,17 +114,25 @@ public class ClientThread extends Thread {
 						
 						ended = true; // Ustawienie flagi ended dla update
 						server.updatePlayers();
-						server.updateLobbyPlayers();
+
+						if (variant != 'r')
+							server.updateLobbyPlayers();
 						
 						break; // Jedyne miejsce zrywające pętlę
 					}
 					System.out.println("Client " + id + " > " + messageFromClient);
 					
-					messageToClient = Interpreter.respond(messageFromClient, server, id);
-					if (messageToClient.startsWith("[ALL]")) {
-						server.printForAll(messageToClient);
-					} else {
-						print(messageToClient);
+					switch (variant) {
+						case 'r': 
+							Interpreter.respondReplayMode(messageFromClient, this); break;
+						default: 
+							messageToClient = Interpreter.respondGameMode(messageFromClient, server, id);
+							
+							if (messageToClient.startsWith("[ALL]")) {
+								server.printForAll(messageToClient);
+							} else {
+								print(messageToClient);
+							}
 					}
 				} while (true);
 			}
@@ -127,9 +140,9 @@ public class ClientThread extends Thread {
 			System.out.println("ClientThread.run: IOException " + e.getMessage()); 
 		}
 
-		try {server.game.nextPlayer(id);} catch(Exception e) {}
-		try {server.game.addPlayersOut(id);} catch(Exception e) {}
-		try {server.printForAll("player " + id + " left; turn: " + server.game.getActivePlayer());} catch(Exception e) {}
+		try { server.game.nextPlayer(id); } catch(Exception e) {}
+		try { server.game.addPlayersOut(id); } catch(Exception e) {}
+		try { server.printForAll("player " + id + " left; turn: " + server.game.getActivePlayer()); } catch(Exception e) {}
 		
 		this.ended = true;
 		server.updatePlayers();

@@ -1,4 +1,10 @@
-package server.trylma;
+package server.trylma.components;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import server.trylma.ServerApp;
 
 /**
  * Klasa tlumaczaca input klienta na instrukcje wykonywane na serwerze
@@ -11,7 +17,7 @@ public class Interpreter {
 	 * @param player klient, ktory wyslal polecenie
 	 * @return informacja zwrotna do wyslania do klienta/klientow
 	 */
-	public static String respond(String message, ServerApp server, int player) {
+	public static String respondGameMode(String message, ServerApp server, int player) {
 		String command = "", args = "";
 		try {
 			command = message.substring(0, message.indexOf(" "));
@@ -71,6 +77,37 @@ public class Interpreter {
 
 			default: 
 				return "unknown command";
+		}
+	}
+
+	/**
+	 * Metoda do interpretowania wiadomości od klienta gdy serwer jest w trybie replay
+	 * Na niepoprawne komendy nie reaguje w żaden sposób
+	 * 
+	 * @param message
+	 * @param client
+	 */
+	public static void respondReplayMode(String message, ClientThread client) {
+		List<String> responseParsed;
+		try {
+			responseParsed = Arrays.stream(message.split("\\s+"))
+                .filter(s -> !s.isEmpty())
+            	.collect(Collectors.toList());
+		} catch(Exception e) {
+			return;
+		}
+
+		switch(responseParsed.get(1)) {
+			case "ID":
+				client.replayEngine.loadGame(responseParsed.get(2));
+				break;
+
+			case "next":
+				client.replayEngine.sendNextMove();
+				break;
+				
+			default:
+				return;
 		}
 	}
 }

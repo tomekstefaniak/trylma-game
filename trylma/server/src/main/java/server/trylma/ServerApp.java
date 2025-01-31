@@ -6,13 +6,12 @@ import java.net.*;
 import java.util.*;
 
 import server.trylma.bot.Bot;
+import server.trylma.components.*;
 
 /**
  * Klasa serwera, na ktorym odbywa sie rozgrywka
  */
 public class ServerApp {
-	/** Port serwera */
-	private final int port;
 
 	/** Maksymalna pojemnosc serwera, takze liczba graczy, dla ktorych odbywa sie rozgrywka */
 	private final int maxCapacity;
@@ -37,19 +36,12 @@ public class ServerApp {
 	 * @throws IllegalArgumentException jezeli podano niepoprawny port serwera
 	 */
 	public ServerApp(int port, int maxCapacity, char variant) throws IOException, IllegalArgumentException {
-		this.port = port;
 		this.maxCapacity = maxCapacity;
 		this.variant = variant;
-		run();
-	}
 
-	/**
-	 * Glowna metoda odpowiadajaca za prace serwera
-	 * @throws IOException jezeli wystapil blad przy pracy serwera
-	 * @throws IllegalArgumentException jezeli port jest niepoprawny
-	 */
-	private void run() throws IOException, IllegalArgumentException {
+		// Utwórz server socket i włącz prawidłowy loop w zależności od trybu serwera (game albo replay)
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
+
 			// Ustawienie kontrolowanego zamknięcia serverSocketa, by klienci mogli odczytać null
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
@@ -66,37 +58,77 @@ public class ServerApp {
 			System.out.println("[SERVER] server listening on port " + port);
 
 			this.players = new ArrayList<ClientThread>();
-			this.bots = new ArrayList<Bot>();
-			this.game = new GameEngine();
 
-			while (true) {
-				Socket socket = serverSocket.accept();
-				updatePlayers();
-				
-				// nie pozwol na wejscie jezeli jest maksymalna liczba graczy na serwerze lub trwa gra
-				if (players.size() + bots.size() < maxCapacity && !game.state()) {
-					ClientThread client = new ClientThread(socket, this, false, variant);
-					client.start();
-					players.add(client);
-
-					// Czekanie na odczytanie nickname - oraz wyświetlenie informacji o dołączeniu gracza
-					int count = 0; // Ustawienie limitu na wypadek nicknamu "Player"
-					while (client.nickname.equals("Player") && count < 40) // Czekamy maksymalnie 2 sekundy
-						try { Thread.sleep(50); } catch (Exception e) {}
-
-					// Wyślij informację o nicknames do każdego gracza w lobby
-					updateLobbyPlayers();
-
-					// rozpoczecie gry jezeli na serwer weszla ostatnia potrzebna osoba
-					if (players.size() + bots.size() == maxCapacity && !game.state())
-						startGame();
-				} else {
-					new ClientThread(socket, this, true).start(); 
-				}
+			switch (variant) {
+				case 'r':
+					runReplayServerLoop(serverSocket);
+					break;
+				default:
+					runGameServerLoop(serverSocket);
 			}
 		}
 		catch (IOException e) {throw new IOException("ServerApp.run: IOException " + e.getMessage());}
 		catch (IllegalArgumentException e) {throw new IllegalArgumentException("ServerApp.run: invalid port");}
+	}
+
+	/**
+	 * Glowna metoda odpowiadajaca za prace serwera
+	 * @throws IOException jezeli wystapil blad przy pracy serwera
+	 * @throws IllegalArgumentException jezeli port jest niepoprawny
+	 */
+	private void runReplayServerLoop(ServerSocket serverSocket) throws IOException, IllegalArgumentException {
+
+		while (true) {
+			Socket socket = serverSocket.accept();
+			updatePlayers();
+			
+			// nie pozwol na wejscie jezeli jest maksymalna liczba graczy na serwerze lub trwa gra
+			if (players.size() < maxCapacity) {
+				ClientThread client = new ClientThread(socket, this, false, 'r');
+				client.start();
+				players.add(client);
+
+				client.replayEngine = new ReplayEngine(client);
+			} else {
+				new ClientThread(socket, this, true).start(); 
+			}
+		}
+	}
+
+	/**
+	 * Glowna metoda odpowiadajaca za prace serwera
+	 * @throws IOException jezeli wystapil blad przy pracy serwera
+	 * @throws IllegalArgumentException jezeli port jest niepoprawny
+	 */
+	private void runGameServerLoop(ServerSocket serverSocket) throws IOException, IllegalArgumentException {
+		this.bots = new ArrayList<Bot>();
+		this.game = new GameEngine();
+
+		while (true) {
+			Socket socket = serverSocket.accept();
+			updatePlayers();
+			
+			// nie pozwol na wejscie jezeli jest maksymalna liczba graczy na serwerze lub trwa gra
+			if (players.size() + bots.size() < maxCapacity && !game.state()) {
+				ClientThread client = new ClientThread(socket, this, false, variant);
+				client.start();
+				players.add(client);
+
+				// Czekanie na odczytanie nickname - oraz wyświetlenie informacji o dołączeniu gracza
+				int count = 0; // Ustawienie limitu na wypadek nicknamu "Player"
+				while (client.nickname.equals("Player") && count < 40) // Czekamy maksymalnie 2 sekundy
+					try { Thread.sleep(50); } catch (Exception e) {}
+
+				// Wyślij informację o nicknames do każdego gracza w lobby
+				updateLobbyPlayers();
+
+				// rozpoczecie gry jezeli na serwer weszla ostatnia potrzebna osoba
+				if (players.size() + bots.size() == maxCapacity && !game.state())
+					startGame();
+			} else {
+				new ClientThread(socket, this, true).start(); 
+			}
+		}
 	}
 
 	/**

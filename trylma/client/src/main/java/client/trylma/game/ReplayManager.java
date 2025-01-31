@@ -61,15 +61,16 @@ public class ReplayManager implements IManager {
                 // Odczytanie ID gracza dla danego pola
                 int playerID = getPlayerIDFromChar(board.get(row).charAt(col));
 
-                // Wyznaczenie współrzędnych pola
-
                 // Utworzenie pola
                 ReplayField newField = new ReplayField(this, playerID);
-
+                System.out.println("New field for ID: " + playerID);
                 // Dodanie pola do planszy
                 rowContainer.getChildren().add(newField);
             }
         }
+
+        // Ustawienie kolorów fieldów
+        updateScene(board);
     }
 
     /**

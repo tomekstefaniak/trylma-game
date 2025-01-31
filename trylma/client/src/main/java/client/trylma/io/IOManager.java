@@ -144,7 +144,7 @@ public class IOManager {
             int turn = Integer.parseInt(extractValue(turnString));
             ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
             ArrayList<Pair<Integer, String>> players = parsePlayers(playersString);
-
+            
             Platform.runLater(() -> clientApp.showReplayScene(variant, turn, players, board));
         } catch (Exception e) {
             System.err.println("Error while starting the replay: " + e.getMessage());
