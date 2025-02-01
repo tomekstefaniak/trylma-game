@@ -5,18 +5,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MoveService {
-	private final MoveRepository moveRepository;
-
 	@Autowired
-	public MoveService(MoveRepository moveRepository) {
-		this.moveRepository = moveRepository;
-	}
+	private MoveRepository moveRepository;
 
-	public Move saveMove(Integer port, Integer game, String board) {
+	public void addMove(int port, int game, String board) {
 		Move move = new Move();
 		move.setPort(port);
 		move.setGame(game);
 		move.setBoard(board);
-		return moveRepository.save(move);
+		moveRepository.save(move);
+		System.out.println("Saved move");
 	}
 }
