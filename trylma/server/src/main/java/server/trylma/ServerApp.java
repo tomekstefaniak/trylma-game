@@ -27,6 +27,8 @@ public class ServerApp {
 	/** Instancja GameEngine zarzadzajaca gra na serwerze */
 	public GameEngine game;
 
+	public ReplayEngine replay;
+
 	/**
 	 * Konstruktor klasy
 	 * @param port port serwera
@@ -35,11 +37,12 @@ public class ServerApp {
 	 * @throws IOException jezeli wystapil blad przy pracy serwera
 	 * @throws IllegalArgumentException jezeli podano niepoprawny port serwera
 	 */
-	public ServerApp(int port, int maxCapacity, char variant, GameEngine game) throws IOException, IllegalArgumentException {
+	public ServerApp(int port, int maxCapacity, char variant, GameEngine game, ReplayEngine replay) throws IOException, IllegalArgumentException {
 		this.maxCapacity = maxCapacity;
 		this.variant = variant;
 		this.game = game;
 		this.game.setPort(port);
+		this.replay = replay;
 
 		// Utwórz server socket i włącz prawidłowy loop w zależności od trybu serwera (game albo replay)
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
@@ -90,7 +93,8 @@ public class ServerApp {
 				client.start();
 				players.add(client);
 
-				client.replayEngine = new ReplayEngine(client);
+				client.replayEngine = replay;
+				client.replayEngine.setClient(client);
 			} else {
 				new ClientThread(socket, this, true).start(); 
 			}
@@ -104,7 +108,6 @@ public class ServerApp {
 	 */
 	private void runGameServerLoop(ServerSocket serverSocket) throws IOException, IllegalArgumentException {
 		this.bots = new ArrayList<Bot>();
-		// this.game = new GameEngine();
 
 		while (true) {
 			Socket socket = serverSocket.accept();
@@ -239,7 +242,7 @@ public class ServerApp {
 				throw new IllegalArgumentException("SeverApp.main: wrong variant (cmd line arg at idx 2)");
 
 			char variant = args[2].charAt(0);
-			new ServerApp(port, maxCapacity, variant, new GameEngine());
+			new ServerApp(port, maxCapacity, variant, new GameEngine(), new ReplayEngine());
 		} 
 		catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }
 		catch (IndexOutOfBoundsException e) { System.out.println("ServerApp.main: invalid number of arguments"); }

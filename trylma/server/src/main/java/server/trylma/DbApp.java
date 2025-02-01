@@ -7,12 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import server.trylma.components.GameEngine;
+import server.trylma.components.ReplayEngine;
 
 @SpringBootApplication
 public class DbApp {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(DbApp.class, args);
-		GameEngine engine = context.getBean(GameEngine.class);
+		GameEngine game = context.getBean(GameEngine.class);
+		ReplayEngine replay = context.getBean(ReplayEngine.class);
 		
 		try {
 			int port, maxCapacity; 
@@ -29,7 +31,7 @@ public class DbApp {
 				throw new IllegalArgumentException("SeverApp.main: wrong variant (cmd line arg at idx 2)");
 
 			char variant = args[2].charAt(0);
-			new ServerApp(port, maxCapacity, variant, engine);
+			new ServerApp(port, maxCapacity, variant, game, replay);
 		} 
 		catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }
 		catch (IndexOutOfBoundsException e) { System.out.println("ServerApp.main: invalid number of arguments"); }
