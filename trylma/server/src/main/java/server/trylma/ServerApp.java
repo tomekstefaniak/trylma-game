@@ -39,6 +39,7 @@ public class ServerApp {
 		this.maxCapacity = maxCapacity;
 		this.variant = variant;
 		this.game = game;
+		this.game.setPort(port);
 
 		// Utwórz server socket i włącz prawidłowy loop w zależności od trybu serwera (game albo replay)
 		try (ServerSocket serverSocket = new ServerSocket(port)) {

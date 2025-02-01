@@ -13,7 +13,15 @@ public class DbApp {
 		GameEngine engine = context.getBean(GameEngine.class);
 		
 		try {
-			new ServerApp(6000, 2, 'c', engine);
+			String portString = args[0];
+			String capacityString = args[1];
+			String variantString = args[2];
+
+			int port = Integer.parseInt(portString);
+			int capacity = Integer.parseInt(capacityString);
+			char variant = variantString.charAt(0);
+
+			new ServerApp(port, capacity, variant, engine);
 		} catch (Exception e) {System.out.println(e);}
 	}
 }

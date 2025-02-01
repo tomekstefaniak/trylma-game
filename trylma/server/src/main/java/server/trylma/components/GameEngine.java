@@ -15,6 +15,9 @@ import server.trylma.game.*;
  */
 @Component
 public class GameEngine {
+	private int currentGame = 0;
+
+	private int port;
 
 	@Autowired
 	private MoveService moveService;
@@ -30,6 +33,10 @@ public class GameEngine {
 
 	/** Lista graczy, ktorzy opuscili rozgrywke */
 	private ArrayList<Integer> playersOut;
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	/**
 	 * Obecny stan gry
@@ -61,6 +68,7 @@ public class GameEngine {
 		this.players = players;
 		this.activePlayer = new Random().nextInt(this.players);
 		this.playersOut = new ArrayList<Integer>();
+		currentGame++;
 	}
 
 	/**
@@ -81,7 +89,7 @@ public class GameEngine {
 		} catch(Exception e) {throw new IllegalArgumentException("GameEngine.move: invalid field");}
 		try {
 			game.move(player, xS, yS, xF, yF);
-			moveService.addMove(6000, 1, draw());
+			moveService.addMove(port, currentGame, draw());
 			nextPlayer(activePlayer);
 		} catch(IllegalArgumentException e) {throw e;}
 	}
