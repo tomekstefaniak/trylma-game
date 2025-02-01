@@ -1,11 +1,6 @@
 package client.trylma.scenes.game;
 
-import java.util.ArrayList;
-
-import client.trylma.ClientApp;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 public interface IGameScene {
     
@@ -13,22 +8,6 @@ public interface IGameScene {
     static final String[] COLORS = {
         "WHITE", "BLACK", "RED", "BLUE", "GREEN", "YELLOW"
     };
-
-    /**
-     * Tworzy pasek nawigacyjny z listą graczy i ich kolorami.
-     *
-     * @param players lista graczy z ich identyfikatorami i pseudonimami
-     * @return pasek (HBox) z informacjami o graczach
-     */
-    HBox createPlayersBar(ArrayList<Pair<Integer, String>> players);
-
-    /**
-     * Tworzy pasek nawigacyjny z przyciskami "EXIT" i "SKIP".
-     *
-     * @param clientApp referencja do głównej klasy aplikacji klienta
-     * @return pasek (HBox) z przyciskami
-     */
-    HBox createButtonsBar(ClientApp clientApp);
 
     /**
      * Tworzy planszę gry (fieldsGrid) w formie siatki pól.

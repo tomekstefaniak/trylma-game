@@ -2,7 +2,6 @@ package client.trylma.game;
 
 import client.trylma.io.IOManager;
 import client.trylma.scenes.game.ReplayScene;
-import javafx.util.Pair;
 import java.util.ArrayList;
 import javafx.scene.layout.HBox;
 
@@ -16,14 +15,12 @@ public class ReplayManager implements IManager {
 
     public final IOManager ioManager;
     private final ReplayScene replayScene;
-    private final ArrayList<Pair<Integer, String>> players;
 
     /**
      * Konstruktor klasy ReplayManager. Inicjalizuje planszę i ustawia początkowy stan gry.
      *
      * @param replayScene scena gry
      * @param ioManager manager wejścia/wyjścia do komunikacji z serwerem
-     * @param variant wariant gry
      * @param turn numer gracza, który rozpoczyna turę
      * @param players lista graczy wraz z ich identyfikatorami
      * @param id identyfikator aktualnego gracza
@@ -32,20 +29,13 @@ public class ReplayManager implements IManager {
     public ReplayManager(
         ReplayScene replayScene, 
         IOManager ioManager,
-        String variant, 
-        int turn, 
-        ArrayList<Pair<Integer, String>> players,
         ArrayList<String> board
     ) {
         this.replayScene = replayScene;
         this.ioManager = ioManager;
-        this.players = players;
 
         // Inicjalizacja planszy gry
         initializeBoard(board);
-
-        // Ustawienie początkowego stanu gry
-        updateState(turn);
     }
 
     /**
@@ -91,25 +81,6 @@ public class ReplayManager implements IManager {
                 field.changeOwner(playerID);
             }
         }
-    }
-
-    /**
-     * Aktualizuje stan gry, ustawia aktualną turę i widoczność przycisku SKIP.
-     *
-     * @param turn numer gracza, którego jest teraz tura
-     */
-    public void updateState(int turn) {
-        System.out.println("Now it's player with ID " + turn + "'s turn.");
-
-        // Znajdź pseudonim aktualnego gracza wykonującego ruch
-        String currentPlayerNickname = players.stream()
-            .filter(pair -> pair.getKey() == turn)
-            .map(Pair::getValue)
-            .findFirst()
-            .orElse("null");
-
-        // Ustaw tekst w etykiecie tury
-        replayScene.setTurnLabelText(currentPlayerNickname + "'s turn");
     }
 
     /**

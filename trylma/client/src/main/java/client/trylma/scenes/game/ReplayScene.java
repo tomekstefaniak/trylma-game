@@ -10,9 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
-
-import java.util.ArrayList;
 
 /**
  * Scena gry głównej (GameScene). Zawiera elementy interfejsu użytkownika,
@@ -20,11 +17,8 @@ import java.util.ArrayList;
  */
 public class ReplayScene extends Scene implements IGameScene {
 
-    /** Pasek nawigacyjny z informacjami o graczach i aktualnej turze. */
-    private HBox topBar1;
-
     /** Pasek nawigacyjny z przyciskami "EXIT" i "SKIP". */
-    private HBox topBar2;
+    private HBox buttonsBar;
 
     /** Kontener na dynamicznie generowane pola planszy gry. */
     public VBox fieldsGrid;
@@ -32,18 +26,13 @@ public class ReplayScene extends Scene implements IGameScene {
     /** Etykieta wyświetlająca informację o aktualnym graczu wykonującym ruch. */
     public Label turnLabel;
 
-    /** Kolory przypisane graczom w grze. */
-    private static final String[] COLORS = {
-        "WHITE", "BLACK", "RED", "BLUE", "GREEN", "YELLOW"
-    };
-
     /**
      * Konstruktor klasy GameScene. Tworzy główny layout sceny oraz jej elementy.
      *
      * @param players lista graczy wraz z ich identyfikatorami i pseudonimami
      * @param clientApp referencja do głównej klasy aplikacji klienta
      */
-    public ReplayScene(ArrayList<Pair<Integer, String>> players, ClientApp clientApp) {
+    public ReplayScene(ClientApp clientApp) {
         super(new BorderPane(), 750, 750);
 
         // Główny layout
@@ -52,52 +41,15 @@ public class ReplayScene extends Scene implements IGameScene {
 
         // Tworzenie paska z graczami (topBar1) i przyciskami (topBar2)
         VBox topBarsContainer = new VBox();
-        topBar1 = createPlayersBar(players);
-        topBar2 = createButtonsBar(clientApp);
+        buttonsBar = createButtonsBar(clientApp);
 
         // Dodanie obu pasków nawigacyjnych do kontenera
-        topBarsContainer.getChildren().addAll(topBar1, topBar2);
+        topBarsContainer.getChildren().addAll(buttonsBar);
         layout.setTop(topBarsContainer);
 
         // Tworzenie planszy gry
         fieldsGrid = createFieldsGrid();
         layout.setCenter(fieldsGrid);
-    }
-
-    /**
-     * Tworzy pasek nawigacyjny z listą graczy i ich kolorami.
-     *
-     * @param players lista graczy z ich identyfikatorami i pseudonimami
-     * @return pasek (HBox) z informacjami o graczach
-     */
-    public HBox createPlayersBar(ArrayList<Pair<Integer, String>> players) {
-        HBox playersBar = new HBox();
-        playersBar.setSpacing(15);
-        playersBar.setAlignment(Pos.CENTER);
-        playersBar.setStyle("-fx-background-color: rgb(30, 30, 50); -fx-padding: 10; -fx-min-height: 50;");
-
-        // Kontener na informacje o graczach
-        HBox playersContainer = new HBox();
-        playersContainer.setSpacing(20);
-        playersContainer.setAlignment(Pos.CENTER);
-
-        // Dodanie etykiet graczy z ich kolorami
-        for (Pair<Integer, String> player : players) {
-            Label playerLabel = new Label(player.getValue() + ": " + COLORS[player.getKey()]);
-            playerLabel.setStyle("-fx-font-size: 12; -fx-text-fill: white;");
-            playersContainer.getChildren().add(playerLabel);
-        }
-
-        // Etykieta wyświetlająca aktualną turę
-        turnLabel = new Label("Player's Turn");
-        turnLabel.setStyle("-fx-font-size: 16; -fx-text-fill: #00ff00;");
-        turnLabel.setAlignment(Pos.CENTER_RIGHT);
-
-        // Dodanie elementów do głównego paska graczy
-        playersBar.getChildren().addAll(playersContainer, turnLabel);
-        HBox.setHgrow(turnLabel, javafx.scene.layout.Priority.ALWAYS);
-
-        return playersBar;
     }
 
     /**

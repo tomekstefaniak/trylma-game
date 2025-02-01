@@ -53,17 +53,13 @@ public class ServerResponseInterpreter {
                     case "started":
                         // Gra rozpoczęła się: wczytanie danych początkowych gry
                         ioManager.startReplay(
-                            serverIOHandler.in.readLine(), // wariant gry
-                            serverIOHandler.in.readLine(), // kto zaczyna
-                            serverIOHandler.in.readLine(), // plansza
-                            serverIOHandler.in.readLine()  // lista graczy
+                            serverIOHandler.in.readLine() // plansza
                         );
                         break;
                     case "next":
                         // Aktualizacja planszy i tury
                         ioManager.updateReplay(
-                            serverIOHandler.in.readLine(), // kto teraz wykonuje ruch
-                            serverIOHandler.in.readLine()  // stan planszy
+                            serverIOHandler.in.readLine()  // Nowy stan planszy
                         );
                         break;
                 }

@@ -19,13 +19,6 @@ public interface IManager {
     void updateScene(ArrayList<String> board);
 
     /**
-     * Aktualizuje stan gry, ustawia aktualną turę i widoczność przycisku SKIP.
-     *
-     * @param turn numer gracza, którego jest teraz tura
-     */
-    void updateState(int turn);
-
-    /**
      * Konwertuje symbol pola (znak) na identyfikator gracza.
      *
      * @param symbol symbol pola (znak z serwera)

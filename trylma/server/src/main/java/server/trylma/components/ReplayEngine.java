@@ -1,7 +1,6 @@
 package server.trylma.components;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,6 @@ public class ReplayEngine {
 
     /** !!!!!!!! Listy bardziej do testów, spokojnie można zmienić sposób przechowywania ruchów */
     private ArrayList<String> gameStatesHistory;
-    private ArrayList<String> gameTurnsHistory;
 
     private int curr;
     private boolean gameFetched = false;
@@ -38,11 +36,6 @@ public class ReplayEngine {
      */
     public void loadGame(String gameID) {
         try {
-            /**
-             * ŁADOWANIE GRY Z BAZY danych
-             * 
-             * NA DOLE TESTOWE DANE
-             */
 
             int port = Integer.parseInt(gameID.substring(0, gameID.indexOf(' ')));
             int game = Integer.parseInt(gameID.substring(gameID.indexOf(' ') + 1));
@@ -62,25 +55,24 @@ public class ReplayEngine {
             //     "O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO10OOO/OO1OO2201OO/OO2OO0O0OO/OO2211012/O20O1OOOOO/OOOOOO01OOO/OOO0OO0O1OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/",
             //     "O/OO/OOO/O0OO/OOOO0O1OOOOOO/OOOOOOO1OOOO/OO1OO2201OO/OO2OO0O0OO/OO2211012/O20O1OOOOO/OOOOOO01OOO/OOO0OO0O1OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/"
             // ));
-            gameTurnsHistory = new ArrayList<>(List.of(
-                "1",
-                "2",
-                "0",
-                "1",
-                "2",
-                "0"
-            ));
-
-            /**
-             * WYSŁANIE INFO Z PIERWSZEGO RUCHU (PODOBNIE DO STARTU GRY) 
-             * TYLKO STAN JEST JUŻ PO PIERWSZYM RUCHU
-             */
+            // gameTurnsHistory = new ArrayList<>(List.of(
+            //     "1",
+            //     "2",
+            //     "0",
+            //     "1",
+            //     "2",
+            //     "0"
+            // ));
 
             client.print("replay started");
-            client.print("variant c"); // tryb
-            client.print("turn 1"); // kto się ruszył
-            client.print("board O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO1OOOO/OO1OO2201OO/O12O00O0OO/OO2211012/OO0OOOOOOO/OOOOOO012OO/OOO0OO021OOO/OOOOO2O2OOOOO/OOOO/OOO/OO/O/"); // stan board
-            client.print("0:Obama 1:Trump 2:Putin"); // lista graczy (identyczny format jak przy grze)
+
+            // client.print("variant c"); // tryb
+            // client.print("turn 1"); // kto się ruszył
+
+            // Catch na wypadek gdyby lista ruchów była pusta
+            try { client.print(gameStatesHistory.get(0)); } catch (Exception e) {}
+            
+            // client.print("0:Obama 1:Trump 2:Putin"); // lista graczy (identyczny format jak przy grze)
 
             curr = 1;
 
@@ -96,8 +88,7 @@ public class ReplayEngine {
             if (gameFetched) {
                 
                 if (curr < gameStatesHistory.size()) {
-                    client.print("replay next");
-                    client.print("turn " + gameTurnsHistory.get(curr));
+                    // Wysłanie kolejnego stanu rozgrywki
                     client.print("board " + gameStatesHistory.get(curr));
                     curr++;
 

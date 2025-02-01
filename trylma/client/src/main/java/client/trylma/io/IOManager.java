@@ -134,18 +134,12 @@ public class IOManager {
      * @param playersString lista graczy
      */
     public void startReplay(
-        String variantString, 
-        String turnString, 
-        String boardString,
-        String playersString
+        String boardString
     ) {
         try {
-            String variant = extractValue(variantString);
-            int turn = Integer.parseInt(extractValue(turnString));
             ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
-            ArrayList<Pair<Integer, String>> players = parsePlayers(playersString);
             
-            Platform.runLater(() -> clientApp.showReplayScene(variant, turn, players, board));
+            Platform.runLater(() -> clientApp.showReplayScene(board));
         } catch (Exception e) {
             System.err.println("Error while starting the replay: " + e.getMessage());
             leaveServer();
@@ -158,12 +152,11 @@ public class IOManager {
      * @param turnString dane dotyczące aktualnej tury
      * @param boardString dane dotyczące planszy
      */
-    public void updateReplay(String turnString, String boardString) {
+    public void updateReplay(String boardString) {
         try {
-            int turn = Integer.parseInt(extractValue(turnString));
             ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
 
-            Platform.runLater(() -> clientApp.updateReplay(turn, board));
+            Platform.runLater(() -> clientApp.updateReplay(board));
         } catch (Exception e) {
             System.err.println("Error while updating the replay: " + e.getMessage());
             leaveServer();
