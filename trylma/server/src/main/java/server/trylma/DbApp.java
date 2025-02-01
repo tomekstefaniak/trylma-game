@@ -1,5 +1,7 @@
 package server.trylma;
 
+import java.io.IOException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -13,15 +15,24 @@ public class DbApp {
 		GameEngine engine = context.getBean(GameEngine.class);
 		
 		try {
-			String portString = args[0];
-			String capacityString = args[1];
-			String variantString = args[2];
+			int port, maxCapacity; 
 
-			int port = Integer.parseInt(portString);
-			int capacity = Integer.parseInt(capacityString);
-			char variant = variantString.charAt(0);
+			try { port = Integer.parseInt(args[0]); } 
+			catch(NumberFormatException e) { throw new IllegalArgumentException("ServerApp.main: invalid port"); }
 
-			new ServerApp(port, capacity, variant, engine);
-		} catch (Exception e) {System.out.println(e);}
+			try {maxCapacity = Integer.parseInt(args[1]);} 
+			catch(NumberFormatException e) { throw new IllegalArgumentException("ServerApp.main: invalid capacity"); }
+
+			// Sprawdzenie poprawności wariantu
+
+			if (!args[2].matches("r|c|o"))
+				throw new IllegalArgumentException("SeverApp.main: wrong variant (cmd line arg at idx 2)");
+
+			char variant = args[2].charAt(0);
+			new ServerApp(port, maxCapacity, variant, engine);
+		} 
+		catch (IllegalArgumentException e) { System.out.println(e.getMessage()); }
+		catch (IndexOutOfBoundsException e) { System.out.println("ServerApp.main: invalid number of arguments"); }
+		catch (IOException e) { System.out.println(e.getMessage()); }
 	}
 }
