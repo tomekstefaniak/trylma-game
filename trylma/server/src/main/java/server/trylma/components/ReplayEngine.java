@@ -34,11 +34,11 @@ public class ReplayEngine {
      * 
      * @param gameID
      */
-    public void loadGame(String gameID) {
-        try {
-
-            int port = Integer.parseInt(gameID.substring(0, gameID.indexOf(' ')));
-            int game = Integer.parseInt(gameID.substring(gameID.indexOf(' ') + 1));
+    public void loadGame(String gamePort, String gameID) {
+        // try {
+            System.out.println("replay started");
+            int port = Integer.parseInt(gamePort);
+            int game = Integer.parseInt(gameID);
 
             ArrayList<Move> moves = moveService.getGame(port, game);
 
@@ -65,7 +65,7 @@ public class ReplayEngine {
             // ));
 
             client.print("replay started");
-
+        
             // client.print("variant c"); // tryb
             // client.print("turn 1"); // kto się ruszył
 
@@ -77,7 +77,7 @@ public class ReplayEngine {
             curr = 1;
 
             gameFetched = true;
-        } catch (Exception e) {}
+        // } catch (Exception e) { System.out.println("ERROR during starting replay!"); }
     }
 
     /**

@@ -99,7 +99,7 @@ public class Interpreter {
 
 		switch(responseParsed.get(1)) {
 			case "ID":
-				client.replayEngine.loadGame(responseParsed.get(2));
+				client.replayEngine.loadGame(responseParsed.get(2), responseParsed.get(3));
 				break;
 
 			case "next":
