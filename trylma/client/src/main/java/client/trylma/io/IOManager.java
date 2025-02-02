@@ -136,14 +136,14 @@ public class IOManager {
     public void startReplay(
         String boardString
     ) {
-        try {
+        // try {
             ArrayList<String> board = new ArrayList<>(Arrays.asList(extractValue(boardString).split("/")));
             
             Platform.runLater(() -> clientApp.showReplayScene(board));
-        } catch (Exception e) {
-            System.err.println("Error while starting the replay: " + e.getMessage());
-            leaveServer();
-        }
+        // } catch (Exception e) {
+        //     System.err.println("Error while starting the replay: " + e.getMessage());
+        //     leaveServer();
+        // }
     }
 
     /**
