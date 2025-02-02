@@ -47,36 +47,17 @@ public class ReplayEngine {
                 gameStatesHistory.add(move.getBoard());
             }
 
-            // gameStatesHistory = new ArrayList<>(List.of(
-            //     "O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO1OOOO/OO1OO2201OO/O12O00O0OO/OO2211012/OO0OOOOOOO/OOOOOO012OO/OOO0OO021OOO/OOOOO2O2OOOOO/OOOO/OOO/OO/O/",
-            //     "O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO1OOOO/OO1OO2201OO/O12O00O0OO/OO2211012/OO0OOOOOOO/OOOOOO01OOO/OOO0OO021OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/",
-            //     "O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO10OOO/OO1OO2201OO/O12OO0O0OO/OO2211012/OO0OOOOOOO/OOOOOO01OOO/OOO0OO021OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/",
-            //     "O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO10OOO/OO1OO2201OO/OO2OO0O0OO/OO2211012/OO0O1OOOOO/OOOOOO01OOO/OOO0OO021OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/",
-            //     "O/OO/OOO/OOOO/OOOO0O1OOOOOO/OOOOOOO10OOO/OO1OO2201OO/OO2OO0O0OO/OO2211012/O20O1OOOOO/OOOOOO01OOO/OOO0OO0O1OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/",
-            //     "O/OO/OOO/O0OO/OOOO0O1OOOOOO/OOOOOOO1OOOO/OO1OO2201OO/OO2OO0O0OO/OO2211012/O20O1OOOOO/OOOOOO01OOO/OOO0OO0O1OOO/OOOO22O2OOOOO/OOOO/OOO/OO/O/"
-            // ));
-            // gameTurnsHistory = new ArrayList<>(List.of(
-            //     "1",
-            //     "2",
-            //     "0",
-            //     "1",
-            //     "2",
-            //     "0"
-            // ));
-
-            client.print("replay started");
-        
-            // client.print("variant c"); // tryb
-            // client.print("turn 1"); // kto się ruszył
-
             // Catch na wypadek gdyby lista ruchów była pusta
-            try { client.print(gameStatesHistory.get(0)); } catch (Exception e) {}
-            
-            // client.print("0:Obama 1:Trump 2:Putin"); // lista graczy (identyczny format jak przy grze)
+            try { client.print(gameStatesHistory.get(0)); } 
+            catch (Exception e) { 
+                client.print("end"); 
+                return;
+            }
 
             curr = 1;
-
             gameFetched = true;
+
+            System.out.println("Replay started!");
         // } catch (Exception e) { System.out.println("ERROR during starting replay!"); }
     }
 
