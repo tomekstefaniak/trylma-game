@@ -37,15 +37,11 @@ cd trylma-game
 
 ### 2. Set up the MySQL Database
 
-Create a database named `trylma` and configure a user (default: `root`, password: `haslo`). You can change these settings in `trylma/server/src/main/resources/application.properties`.
+Download mysql/mariadb server.
+Run scripts scripts/create_db.sh to create example database:
 
-Example database setup:
-
-```sql
-CREATE DATABASE trylma CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'root'@'localhost' IDENTIFIED BY 'haslo';
-GRANT ALL PRIVILEGES ON trylma.* TO 'root'@'localhost';
-FLUSH PRIVILEGES;
+```bash
+scripts/create_db.sh
 ```
 
 Ensure your `application.properties` contains:
@@ -60,6 +56,8 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 ```
+
+You can change these settings in `trylma/server/src/main/resources/application.properties`.
 
 ### 3. Build the Project
 
@@ -109,7 +107,7 @@ java -jar target/client-1.0-SNAPSHOT.jar
 
 ### 6. Configuration
 
-- Server main class: `server.trylma.DbApp`
+- Server main class: `server.trylma.ServerApp`
 - Client main class: `client.trylma.ClientApp`
 - All configuration files are in `trylma/server/src/main/resources/application.properties`
 
