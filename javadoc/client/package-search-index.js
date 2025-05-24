@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"client.chinesecheckers"},{"l":"client.chinesecheckers.game"},{"l":"client.chinesecheckers.io"},{"l":"client.chinesecheckers.scenes"}];updateSearchResults();

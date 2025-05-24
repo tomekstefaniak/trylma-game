@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"server.chinesecheckers"},{"l":"server.chinesecheckers.game"}];updateSearchResults();
